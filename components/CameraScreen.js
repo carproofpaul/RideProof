@@ -29,7 +29,7 @@ export default class CameraScreen extends React.Component {
     this.setState({loading: true})
     if (this.camera) {
       this.camera.takePictureAsync({quality: 0.75}).then(data => {
-        this.setState({image: data})
+        this.props.onImage(data.uri)
         Vibration.vibrate();
       });
     }
@@ -52,7 +52,7 @@ export default class CameraScreen extends React.Component {
     });
 
     if (!result.cancelled) {
-      this.setState({image: result})
+      this.props.onImage(result.uri)
       Vibration.vibrate();
     }
   };
