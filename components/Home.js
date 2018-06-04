@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Alert } from 'react-native';
 import CameraScreen from './CameraScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
@@ -17,10 +17,17 @@ export default class App extends React.Component {
 
     getCamera(){
         return (
-            <CameraScreen onBack={() => this.setState({camera: false})} onImage={(image) => this.setState({image: image, camera: false})} />
+            <CameraScreen onBack={() => this.setState({camera: false})} onImage={(image) => {
+                this.uploadImage(image)
+                this.setState({image: image, camera: false})
+            }} />
         )
     }
 
+    /**
+     * gets recalls from vin
+     * @param {vin of car} vin 
+     */
     getRecalls(vin){
         var xmlhttp = new XMLHttpRequest();
         var result;
@@ -48,6 +55,10 @@ export default class App extends React.Component {
         xmlhttp.send();
     }
 
+    /**
+     * gets vhr from car's vin
+     * @param {vin of car} vin 
+     */
     getVehicleHistoryReport(vin){
         var xmlhttp = new XMLHttpRequest();
         var result;
@@ -73,6 +84,10 @@ export default class App extends React.Component {
         xmlhttp.send();
     }
 
+    /**
+     * Gets vin from license plate number
+     * @param {license plate number} licensePlate 
+     */
     getVinFromLicensePlate(licensePlate){
         this.setState({loading: true})
 
@@ -111,7 +126,95 @@ export default class App extends React.Component {
         xmlhttp.send();
     }
 
+    /**
+     * Use Sighthound to get plate number
+     * @param {image url from cloudinary} url 
+     */
+    getLicensePlateFromImage(url){
+        console.log(url)
+        var image = {image: url};
+        var xmlhttp = new XMLHttpRequest();
+        var result;
+        
+        xmlhttp.onreadystatechange = (function () {
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            result = JSON.parse(xmlhttp.responseText);
+
+            if(result.objects.length == 0 || result.objects[0].vehicleAnnotation.recognitionConfidence === 0){
+                Alert.alert(
+                    'Error',
+                    'License plate cannot be read. Please try again by entering the license plate number manually.',
+                    [
+                        {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
+                    ],
+                    { cancelable: false }
+                  )
+                  return
+            }
+    
+            try{ licensePlate = result.objects[0].vehicleAnnotation.licenseplate.attributes.system.string.name } 
+            catch(error) { licensePlate = 'Not Found' }
+    
+            console.log("License plate: " + licensePlate)
+            
+            if(licensePlate !== 'Not Found'){
+              this.getVinFromLicensePlate(licensePlate)
+            } else {
+              Alert.alert(
+                'Error',
+                'License plate cannot be read. Please try again by entering the license plate number manually.',
+                [
+                    {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
+                ],
+                { cancelable: false }
+              )
+            }
+          }
+        }).bind(this)
+        
+        xmlhttp.open("POST", "https://dev.sighthoundapi.com/v1/recognition?objectType=vehicle,licenseplate");
+        xmlhttp.setRequestHeader("Content-type", "application/json");
+        xmlhttp.setRequestHeader("X-Access-Token", "zGYv5QFWLWQuGuXW54FsP6pzIyq9oCtQyqpa");
+        xmlhttp.send(JSON.stringify(image));
+    }
+
+    /**
+     * Uploads the image to cloudinary, and send link to sighthound
+     * @param {URI of image} uri 
+     */
+    uploadImage(uri){
+        this.setState({loading: true})
+
+        var fd = new FormData();
+        var xmlhttp = new XMLHttpRequest();
+        var result;
+        
+        xmlhttp.onreadystatechange = (function () {
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            result = JSON.parse(xmlhttp.responseText);
+            this.getLicensePlateFromImage(result.url)
+          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+            console.log("ERROR: " + xmlhttp)
+            this.setState({loading: false})
+          }
+        }).bind(this)
+        
+        xmlhttp.open("POST", "https://api.cloudinary.com/v1_1/dlic95ed5/image/upload", true);
+        xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xmlhttp.setRequestHeader("Content-type", "multipart/form-data");
+        xmlhttp.setRequestHeader("X-Access-Token", "zGYv5QFWLWQuGuXW54FsP6pzIyq9oCtQyqpa");
+    
+        fd.append('upload_preset', 'tqcsiwue');
+        fd.append('file', {
+          uri: uri,
+          type: 'image/jpeg',
+          name: 'file',
+        });
+        xmlhttp.send(fd);
+    }
+
     render() {
+
         this.state.camera == true 
         ?   content = this.getCamera()
         :   content =
