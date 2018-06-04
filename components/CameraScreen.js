@@ -134,9 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  navigation: {
-    flex: 1,
-  },
   gallery: {
     flex: 1,
     flexDirection: 'row',
@@ -174,22 +171,6 @@ const styles = StyleSheet.create({
   },
   galleryButton: {
     backgroundColor: 'indianred',
-  },
-  face: {
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 2,
-    position: 'absolute',
-    borderColor: '#FFD700',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  faceText: {
-    color: '#FFD700',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 10,
-    backgroundColor: 'transparent',
   },
   row: {
     flexDirection: 'row',
