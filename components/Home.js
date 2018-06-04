@@ -21,7 +21,60 @@ export default class App extends React.Component {
         )
     }
 
+    getRecalls(vin){
+        var xmlhttp = new XMLHttpRequest();
+        var result;
+    
+        xmlhttp.onreadystatechange = (function () {
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            //DATA
+            recalls = JSON.parse(xmlhttp.responseText)
+
+            console.log("RECALLS: \n" + JSON.stringify(recalls))
+
+            this.setState({loading: false}) //STOP LOADER, LAST ONE
+    
+          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+            //ERROR
+            console.log("ERROR: " + xmlhttp)
+            this.setState({loading: false})
+          }
+        }).bind(this)
+        
+        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Recall/Get?vin="+vin, true);
+        xmlhttp.setRequestHeader("User-Agent", "request");
+        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
+    
+        xmlhttp.send();
+    }
+
+    getVehicleHistoryReport(vin){
+        var xmlhttp = new XMLHttpRequest();
+        var result;
+    
+        xmlhttp.onreadystatechange = (function () {
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            //DATA
+            vhr = JSON.parse(xmlhttp.responseText)
+
+            console.log("VHR: \n" + JSON.stringify(vhr))
+    
+          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+            //ERROR
+            console.log("ERROR: " + xmlhttp)
+            this.setState({loading: false})
+          }
+        }).bind(this)
+        
+        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Vhr/Get?vin="+vin, true);
+        xmlhttp.setRequestHeader("User-Agent", "request");
+        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
+    
+        xmlhttp.send();
+    }
+
     getVinFromLicensePlate(licensePlate){
+        this.setState({loading: true})
 
         var xmlhttp = new XMLHttpRequest();
         var result;
@@ -38,7 +91,11 @@ export default class App extends React.Component {
             } 
 
             vin = json.QuickVINPlus.VINInfo.VIN[0] //VIN
-            console.log(vin)
+            console.log("VIN: " + vin)
+
+            //GETTING OTHER DATA
+            this.getVehicleHistoryReport(vin)
+            this.getRecalls(vin)
     
           } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
             //ERROR
