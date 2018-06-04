@@ -24,6 +24,17 @@ export default class App extends React.Component {
         )
     }
 
+    error(message){
+        Alert.alert(
+            'Error',
+            message,
+            [
+                {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
+            ],
+            { cancelable: false }
+          )
+    }
+
     /**
      * gets recalls from vin
      * @param {vin of car} vin 
@@ -101,7 +112,8 @@ export default class App extends React.Component {
     
             //NO VIN
             if(json.QuickVINPlus.VINInfo.VIN.length == 0){
-                console.log("NO VIN")
+                this.error('No VIN was found.')
+                this.setState({loading: false})
                 return
             } 
 
@@ -141,15 +153,8 @@ export default class App extends React.Component {
             result = JSON.parse(xmlhttp.responseText);
 
             if(result.objects.length == 0 || result.objects[0].vehicleAnnotation.recognitionConfidence === 0){
-                Alert.alert(
-                    'Error',
-                    'License plate cannot be read. Please try again by entering the license plate number manually.',
-                    [
-                        {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
-                    ],
-                    { cancelable: false }
-                  )
-                  return
+                this.error('License plate cannot be read. Please try again by entering the license plate number manually.')
+                return
             }
     
             try{ licensePlate = result.objects[0].vehicleAnnotation.licenseplate.attributes.system.string.name } 
@@ -158,16 +163,9 @@ export default class App extends React.Component {
             console.log("License plate: " + licensePlate)
             
             if(licensePlate !== 'Not Found'){
-              this.getVinFromLicensePlate(licensePlate)
+                this.getVinFromLicensePlate(licensePlate)
             } else {
-              Alert.alert(
-                'Error',
-                'License plate cannot be read. Please try again by entering the license plate number manually.',
-                [
-                    {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
-                ],
-                { cancelable: false }
-              )
+                this.error('License plate cannot be read. Please try again by entering the license plate number manually.')
             }
           }
         }).bind(this)
