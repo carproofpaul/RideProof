@@ -3,13 +3,16 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import CameraScreen from './CameraScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
+import { Token } from '../resources/Token';
+import Loader from './Loader';
 
 export default class App extends React.Component {
 
     state = {
         camera: false,
         licensePlateText: "",
-        image: null
+        image: null,
+        loading: false
     }
 
     getCamera(){
@@ -19,15 +22,44 @@ export default class App extends React.Component {
     }
 
     getVinFromLicensePlate(licensePlate){
-        console.log(licensePlate)
+
+        var xmlhttp = new XMLHttpRequest();
+        var result;
+    
+        xmlhttp.onreadystatechange = (function () {
+          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            //DATA
+            json = JSON.parse(xmlhttp.responseText)
+    
+            //NO VIN
+            if(json.QuickVINPlus.VINInfo.VIN.length == 0){
+                console.log("NO VIN")
+                return
+            } 
+
+            vin = json.QuickVINPlus.VINInfo.VIN[0] //VIN
+            console.log(vin)
+    
+          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+            //ERROR
+            console.log("ERROR: " + xmlhttp)
+            this.setState({loading: false})
+          }
+        }).bind(this)
+        
+        xmlhttp.open("GET", "http://carfaxapi.carproof.com/api/QuickVIN?licensePlate="+licensePlate+"&province=on", true);
+        xmlhttp.setRequestHeader("User-Agent", "request");
+        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
+    
+        xmlhttp.send();
     }
 
     render() {
-        console.log(this.state.image)
         this.state.camera == true 
         ?   content = this.getCamera()
         :   content =
                 <View style={styles.container}>
+                    <Loader loading={this.state.loading}/>
                     <Image source={{uri: this.state.image}} style={{width: 90, height: 160}} />
                     <Input
                         containerStyle={styles.component} 
