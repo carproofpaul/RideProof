@@ -7,6 +7,7 @@ import { Token } from '../resources/Token';
 import Loader from './Loader';
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 import RecallEvents from './VehicleHistoryReport/RecallEvents';
+import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
 
 export default class Display extends React.Component {
 
@@ -45,9 +46,14 @@ export default class Display extends React.Component {
                     <Text style={styles.danger}>Vehicle reported stolen</Text>
                 }
                 {
-                    this.props.vhrReport.ServiceEvents === null ? 
-                    null : 
-                    <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
+                    <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
+                        {
+                            this.props.vhrReport.ServiceEvents === null ? 
+                            null : 
+                            <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>
+                        }
+                    </TouchableOpacity>
+                }
                 {
                     <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
                         {
