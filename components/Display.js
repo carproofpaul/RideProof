@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
+import Terms_services from './Terms_services';
 
 export default class App extends React.Component {
 
@@ -12,12 +13,19 @@ export default class App extends React.Component {
         camera: false,
         licensePlateText: "",
         image: null,
-        loading: false
+        loading: false,
+        modalVisible: false
     }
 //TOKEN: 5bd73da3-1a7a-4dc4-9680-afc7b9faaae0
     
 
     render() {
+
+        if(this.state.modalVisible==true) {
+            return(
+                <Terms_services onClose={()=>this.setState({modalVisible:false})} />
+            )
+        }
         
         //Find last service date
         var lastServ = null
@@ -34,7 +42,7 @@ export default class App extends React.Component {
             onRequestClose={() => {
                 this.props.onClose()
             }}>
-            <View style={{marginTop: 22, marginLeft:10}}>
+            <View style={{marginTop: 22, marginLeft:10, marginRight:10}}>
               <View>
               <Text>{this.props.recalls.Vin}</Text>
               <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
@@ -43,6 +51,7 @@ export default class App extends React.Component {
                 {this.props.vhrReport.StolenEvents===null ? <Text>Not reported stolen</Text> : <Text style={styles.danger}>Vehicle reported stolen</Text>}
                 {this.props.vhrReport.ServiceEvents===null ? null : <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
                 {this.props.recalls.Recalls===null ? null : <Text style={styles.danger}>Recalls reported</Text>}
+                <Text style={styles.info} onPress={() => {this.setState({modalVisible: true})}}>Information on Reports</Text>
               </View>
             </View>
           </Modal>
@@ -68,4 +77,8 @@ const styles = StyleSheet.create({
       color: '#E2001D',
       fontWeight: 'bold',
   },
+  info: {
+      fontSize: 18,
+      textAlign: 'center',
+  }
 });
