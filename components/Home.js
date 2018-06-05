@@ -359,7 +359,6 @@ export default class App extends React.Component {
                             onPress={() => this.setState({prompt: true})}
                         />
                     </View>
-                    <Text style={{fontSize: 15, fontStyle: 'italic', margin: 10}}>Take a picture of a car's license plate or enter it manually</Text>
                 </View>
             </View>
         )
