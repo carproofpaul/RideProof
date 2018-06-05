@@ -269,8 +269,8 @@ export default class App extends React.Component {
 
     takePicture = async function() {
         if (this.camera) {
-            Vibration.vibrate();        
             this.camera.takePictureAsync({quality: 0.75}).then(data => {
+                Vibration.vibrate()
                 this.setState({loading: true, image: data.uri})        
                 this.uploadImage(data.uri)
             });
@@ -281,7 +281,7 @@ export default class App extends React.Component {
 
         if(this.state.modalVisible==true) {
             return(
-                <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false})} />
+                <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false, image:null})} />
             )
         }
         

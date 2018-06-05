@@ -37,12 +37,12 @@ export default class App extends React.Component {
             <View style={{marginTop: 22, marginLeft:10}}>
               <View>
               <Text>{this.props.recalls.Vin}</Text>
-              <Text>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
+              <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
               <Text> </Text>
-                {this.props.vhrReport.AccidentEvents===null ? null : <Text>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>}
-                {this.props.vhrReport.StolenEvents===null ? null : <Text>Vehicle reported stolen</Text>}
-                {this.props.vhrReport.ServiceEvents===null ? null : <Text>Last serviced {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
-                {this.props.recalls.Recalls===null ? null : <Text>Recalls reported</Text>}
+                {this.props.vhrReport.AccidentEvents===null ? <Text>No accidents reported</Text> : <Text style={styles.danger}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>}
+                {this.props.vhrReport.StolenEvents===null ? <Text>Not reported stolen</Text> : <Text style={styles.danger}>Vehicle reported stolen</Text>}
+                {this.props.vhrReport.ServiceEvents===null ? null : <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
+                {this.props.recalls.Recalls===null ? null : <Text style={styles.danger}>Recalls reported</Text>}
               </View>
             </View>
           </Modal>
@@ -58,6 +58,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   component: {
-      margin: 30
-  }
+      margin: 30,
+  },
+  header: {
+      fontSize: 25,
+      fontWeight: 'bold',
+  },
+  danger: {
+      color: '#E2001D',
+      fontWeight: 'bold',
+  },
 });
