@@ -18,14 +18,14 @@ export default class App extends React.Component {
     
 
     render() {
-        console.log("let's try this again");
-        console.log(this.props.vhrReport.ServiceEvents.length)
-        console.log(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date)
-        // console.log(JSON.stringify(this.props.vhrReport));
         
         //Find last service date
-        var lastServ = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
-        lastServ = lastServ.toString();
+        var lastServ = null
+        try {
+            lastServ = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
+            lastServ = lastServ.toString();
+        } catch(error){}
+
 
         return(
             <Modal

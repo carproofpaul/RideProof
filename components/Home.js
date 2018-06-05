@@ -1,20 +1,13 @@
 import React from 'react';
-<<<<<<< HEAD
-import { StyleSheet, Text, View, Button, Image, Modal } from 'react-native';
-=======
-import { StyleSheet, Text, View, Button, Image, Alert, Vibration, KeyboardAvoidingView  } from 'react-native';
->>>>>>> bf754f6d4692a7a67c14b0f1579d3bba2e90c936
+import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Modal, KeyboardAvoidingView  } from 'react-native';
 import CameraScreen from './CameraScreen';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Icon } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
-<<<<<<< HEAD
 import Display from './Display';
-=======
 import Prompt from 'rn-prompt';
 import { Constants, Camera, FileSystem, Permissions } from 'expo';
->>>>>>> bf754f6d4692a7a67c14b0f1579d3bba2e90c936
 
 export default class App extends React.Component {
 
@@ -23,14 +16,10 @@ export default class App extends React.Component {
         prompt: false,
         image: null,
         loading: false,
-<<<<<<< HEAD
-        modalVisible: false
-
-=======
+        modalVisible: false,
         permissionsGranted: null,
         ratio: '4:3',
         flash: false,
->>>>>>> bf754f6d4692a7a67c14b0f1579d3bba2e90c936
     }
 
     async componentWillMount() {
@@ -289,38 +278,12 @@ export default class App extends React.Component {
     };
 
     render() {
-<<<<<<< HEAD
 
         if(this.state.modalVisible==true) {
             return(
                 <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false})} />
             )
         }
-
-        this.state.camera == true 
-        ?   content = this.getCamera()
-        :   content =
-                <View style={styles.container}>
-                    <Loader loading={this.state.loading}/>
-                    <Image source={{uri: this.state.image}} style={{width: 90, height: 160}} />
-                    <Input
-                        containerStyle={styles.component} 
-                        placeholder='License Plate'
-                        rightIcon=  {{ 
-                                        type: 'font-awesome', 
-                                        name: 'search',
-                                        onPress: () => this.getVinFromLicensePlate(this.state.licensePlateText)
-                                    }}
-                        onChangeText={(text) => this.setState({licensePlateText: text})}
-                        onSubmitEditing={() => this.getVinFromLicensePlate(this.state.licensePlateText)}
-                    />
-                    <Button 
-                        style={styles.component} 
-                        title='Use Camera to Capture License Plate' 
-                        onPress={() => this.setState({camera: true})} 
-                    />
-                </View>
-=======
         
         /*
             this.state.camera == true 
@@ -348,7 +311,6 @@ export default class App extends React.Component {
                     </View>
             */
 
->>>>>>> bf754f6d4692a7a67c14b0f1579d3bba2e90c936
 
         return(
             <View style={{flex: 1}}>
