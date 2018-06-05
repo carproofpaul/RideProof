@@ -22,6 +22,15 @@ export default class ServiceEvents extends React.Component {
     }
     
     render() {
+        //null check
+        if(this.props.data == null){
+            return(
+                <View>
+                    <Text style={{fontStyle: 'italic', margin: 10, textAlign: 'center'}}>No Service Events Available</Text>
+                </View>
+            )
+        }
+
         return (
             <ScrollView style={{margin: 10}}>
                 <Text style={{fontWeight: 'bold', fontSize: 25}}>Service Events</Text>
