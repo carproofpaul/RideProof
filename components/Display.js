@@ -30,10 +30,12 @@ export default class Display extends React.Component {
                 <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
                 <Text> </Text>
                 {
-                    <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents />})}>
-                        {this.props.vhrReport.AccidentEvents === null ? 
-                        <Text>No accidents reported</Text> : 
-                        <Text style={styles.danger}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>}
+                    <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
+                        {
+                            this.props.vhrReport.AccidentEvents === null ? 
+                            <Text>No accidents reported</Text> : 
+                            <Text style={styles.danger}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>
+                        }
                     </TouchableOpacity>
                 }
                 {
