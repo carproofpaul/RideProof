@@ -68,7 +68,6 @@ export default class Display extends React.Component {
     }
 
     render() {
-    
         return(
             <Modal
             animationType="slide"
@@ -79,6 +78,16 @@ export default class Display extends React.Component {
                 this.props.onClose()
             }}>
             <View style={{marginTop: 22, marginLeft:10}}>
+                <Icon
+                    name={(this.state.component) ? 'chevron-left' : 'chevron-down'}
+                    size={20}
+                    style={{margin: 10}}
+                    onPress={() => {
+                        this.state.component ?
+                        this.setState({component: null}) :
+                        this.props.onClose()
+                    }}
+                />
                 {
                     this.state.component ?
                     this.state.component :
