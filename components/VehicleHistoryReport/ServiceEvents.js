@@ -36,7 +36,7 @@ export default class ServiceEvents extends React.Component {
                 <Text style={{fontWeight: 'bold', fontSize: 25}}>Service Events</Text>
                 <Divider style={{marginVertical: 10}}/>
                 {
-                    this.props.data.map((value, i) => (
+                    this.props.data.reverse().map((value, i) => (
                     <ListItem
                         key={i}
                         title={value.Date.split('T')[0]}
