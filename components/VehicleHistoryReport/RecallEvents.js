@@ -8,7 +8,7 @@ import { ListItem } from 'react-native-elements';
 import moment from 'moment';
 
 
-export default class AccidentEvents extends React.Component {
+export default class RecallEvents extends React.Component {
 
     displayDetail(message){
         Alert.alert(
@@ -28,11 +28,11 @@ export default class AccidentEvents extends React.Component {
                 this.props.data.map((value, i) => (
                 <ListItem
                     key={i}
-                    title={'Point of Impact: ' + value.PointOfImpact}
+                    title={'Campaign Number: ' + value.CampaignNumber}
                     subtitle={value.Date.split('T')[0]}
                     rightTitle={(() => {
                         if(value.Location.City !== null) return value.Location.City;
-                        if(value.Location.StateProv !== null) return value.Location.StateProv + ', ' + value.Location.Country;
+                        if(value.Location.StateProv !== null) return value.Location.StateProv;
                         else return 'No Location'
                     })()}
                     chevron

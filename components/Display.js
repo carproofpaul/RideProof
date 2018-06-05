@@ -6,6 +6,7 @@ import { Input } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
+import RecallEvents from './VehicleHistoryReport/RecallEvents';
 
 export default class Display extends React.Component {
 
@@ -25,7 +26,7 @@ export default class Display extends React.Component {
         } catch(error){}
 
         return(
-            <View>
+            <View style={{alignItems: 'center', margin: 10}}>
                 <Text>{this.props.recalls.Vin}</Text>
                 <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
                 <Text> </Text>
@@ -48,9 +49,13 @@ export default class Display extends React.Component {
                     null : 
                     <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
                 {
-                    this.props.recalls.Recalls === null ?
-                    null : 
-                    <Text style={styles.danger}>Recalls reported</Text>
+                    <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
+                        {
+                            this.props.recalls.Recalls === null ?
+                            null : 
+                            <Text style={styles.danger}>Recalls reported</Text>
+                        }
+                    </TouchableOpacity>
                 }
             </View>
         )
