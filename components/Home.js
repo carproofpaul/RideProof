@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Modal } from 'react-native';
 import CameraScreen from './CameraScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
+import Display from './Display';
 
 export default class App extends React.Component {
 
@@ -12,7 +13,9 @@ export default class App extends React.Component {
         camera: false,
         licensePlateText: "",
         image: null,
-        loading: false
+        loading: false,
+        modalVisible: false
+
     }
 
     getCamera(){
@@ -28,11 +31,11 @@ export default class App extends React.Component {
         xmlhttp.onreadystatechange = (function () {
           if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             //DATA
-            recalls = JSON.parse(xmlhttp.responseText)
+            this.recalls = JSON.parse(xmlhttp.responseText)
 
-            console.log("RECALLS: \n" + JSON.stringify(recalls))
+            console.log("RECALLS: \n" + JSON.stringify(this.recalls))
 
-            this.setState({loading: false}) //STOP LOADER, LAST ONE
+            this.setState({loading: false, modalVisible: true}) //STOP LOADER, LAST ONE
     
           } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
             //ERROR
@@ -55,9 +58,11 @@ export default class App extends React.Component {
         xmlhttp.onreadystatechange = (function () {
           if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             //DATA
-            vhr = JSON.parse(xmlhttp.responseText)
+            this.vhr = JSON.parse(xmlhttp.responseText)
 
-            console.log("VHR: \n" + JSON.stringify(vhr))
+            console.log("VHR: \n" + JSON.stringify(this.vhr))
+
+            this.getRecalls(vin)
     
           } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
             //ERROR
@@ -95,7 +100,7 @@ export default class App extends React.Component {
 
             //GETTING OTHER DATA
             this.getVehicleHistoryReport(vin)
-            this.getRecalls(vin)
+            
     
           } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
             //ERROR
@@ -112,6 +117,13 @@ export default class App extends React.Component {
     }
 
     render() {
+
+        if(this.state.modalVisible==true) {
+            return(
+                <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false})} />
+            )
+        }
+
         this.state.camera == true 
         ?   content = this.getCamera()
         :   content =
