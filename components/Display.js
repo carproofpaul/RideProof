@@ -1,58 +1,111 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Modal, TouchableOpacity } from 'react-native';
 import CameraScreen from './CameraScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
-import Terms_services from './Terms_services';
+import TermsServices from './TermsServices';
+import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 
-export default class App extends React.Component {
+export default class Display extends React.Component {
+
+//TOKEN: 5bd73da3-1a7a-4dc4-9680-afc7b9faaae0
 
     state = {
-        camera: false,
-        licensePlateText: "",
-        image: null,
-        loading: false,
-        modalVisible: false
+        component: null,
+        modalVisible: false,
     }
-//TOKEN: 5bd73da3-1a7a-4dc4-9680-afc7b9faaae0
-    
 
-    render() {
 
-        if(this.state.modalVisible==true) {
-            return(
-                <Terms_services onClose={()=>this.setState({modalVisible:false})} />
-            )
-        }
-        
+    getContent(){
         //Find last service date
-        var lastServ = null
+        var serv = null
+        var currentDate = new Date();
+        var yearAgo = new Date();
+        var inRange = true
+        yearAgo.setFullYear(yearAgo.getFullYear()-1);
+
         try {
-            lastServ = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
-            lastServ = lastServ.toString();
+            serv = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
+            lastServ = serv.toString();
+
+            if(serv < currentDate && serv > yearAgo)
+                inRange=true;
+            else 
+                inRange=false;
+
         } catch(error){}
 
+        // if(serv <= currentDate && serv >= yearAgo)
+        // console.log("Within range!")
+        // else console.log("not")
 
+        return(
+            <View>
+                <Text>{this.props.recalls.Vin}</Text>
+                <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
+                <Text> </Text>
+                {
+                    <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
+                        {
+                            this.props.vhrReport.AccidentEvents === null ? 
+                            <Icon raised name='smile-o'color='#3890EA' size={40}>
+                            <Text style={styles.list}>No accidents reported</Text></Icon> : 
+                            <Icon raised name='warning'color='#E2001D' size={40}>
+                            <Text style={styles.list}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text> </Icon>
+                        }
+                    </TouchableOpacity>
+                }
+                {
+                    this.props.vhrReport.StolenEvents === null ? 
+                    <Icon name='check' color='#3890EA' size={40}>
+                    <Text style={styles.list}>Not reported stolen</Text></Icon> : 
+                    <Icon raised name='warning'color='#E2001D' size={40}>
+                    <Text style={styles.danger}>Vehicle reported stolen</Text></Icon>
+                }
+                {
+                    this.props.vhrReport.ServiceEvents === null ? 
+                    null : 
+                    inRange==true ? 
+                    <Icon name='wrench' color='#3890EA' size={40}>
+                    <Text style={styles.list}>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text></Icon> :
+                    <Icon name='warning' color='#E2001D' size={40}>
+                <Text style={styles.list}>Vehicle has no reported service in the last year</Text></Icon> }
+                {
+                    this.props.recalls.Recalls === null ?
+                    null : 
+                    <Icon raised name='warning'color='#E2001D' size={40}>
+                    <Text style={styles.list}>Recall(s) reported</Text></Icon>
+                }
+                {
+                    <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
+                        {
+                            <Text>Information on Reports</Text>
+                        }
+                    </TouchableOpacity>
+                }
+            </View>
+        )
+    }
+
+    render() {
+    
         return(
             <Modal
             animationType="slide"
             visible={true}
             onRequestClose={() => {
+                this.state.component ?
+                this.setState({component: null}) :
                 this.props.onClose()
             }}>
-            <View style={{marginTop: 22, marginLeft:10, marginRight:10}}>
-              <View>
-              <Text>{this.props.recalls.Vin}</Text>
-              <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
-              <Text> </Text>
-                {this.props.vhrReport.AccidentEvents===null ? <Text>No accidents reported</Text> : <Text style={styles.danger}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>}
-                {this.props.vhrReport.StolenEvents===null ? <Text>Not reported stolen</Text> : <Text style={styles.danger}>Vehicle reported stolen</Text>}
-                {this.props.vhrReport.ServiceEvents===null ? null : <Text>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>}
-                {this.props.recalls.Recalls===null ? null : <Text style={styles.danger}>Recalls reported</Text>}
-                <Text style={styles.info} onPress={() => {this.setState({modalVisible: true})}}>Information on Reports</Text>
-              </View>
+            <View style={{marginTop: 22, marginLeft:10}}>
+                {
+                    this.state.component ?
+                    this.state.component :
+                    this.getContent()
+                }
             </View>
           </Modal>
         )
@@ -73,9 +126,9 @@ const styles = StyleSheet.create({
       fontSize: 25,
       fontWeight: 'bold',
   },
-  danger: {
-      color: '#E2001D',
-      fontWeight: 'bold',
+  list: {
+      color: 'black',
+      fontSize: 18,
   },
   info: {
       fontSize: 18,
