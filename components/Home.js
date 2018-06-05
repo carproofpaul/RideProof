@@ -1,22 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image, Alert, Vibration, KeyboardAvoidingView  } from 'react-native';
 import CameraScreen from './CameraScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
+//import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input, Icon } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
-
+import Prompt from 'rn-prompt';
 import { Constants, Camera, FileSystem, Permissions } from 'expo';
 
 export default class App extends React.Component {
 
     state = {
-        camera: true,
         licensePlateText: "",
+        prompt: false,
         image: null,
         loading: false,
         permissionsGranted: null,
-        ratio: '4:3'
+        ratio: '4:3',
+        flash: false,
     }
 
     async componentWillMount() {
@@ -33,7 +34,6 @@ export default class App extends React.Component {
             }} />
         )
         */
-        if(this.state.camera == false) return null
     
         if(this.state.permissionsGranted == true) cameraScreenContent = this.renderCamera()
         else if(this.state.permissionsGranted == false) cameraScreenContent = this.renderNoPermissions()
@@ -58,6 +58,7 @@ export default class App extends React.Component {
                     flex: 3,
                 }}
                 type='back'
+                flashMode={this.state.flash ? 'on' : 'off'}
                 ratio={this.state.ratio}
             />
         )
@@ -149,6 +150,8 @@ export default class App extends React.Component {
      * @param {license plate number} licensePlate 
      */
     getVinFromLicensePlate(licensePlate){
+        if(licensePlate === '') return
+
         this.setState({loading: true})
 
         var xmlhttp = new XMLHttpRequest();
@@ -262,11 +265,11 @@ export default class App extends React.Component {
 
     takePicture = async function() {
         if (this.camera) {
-          this.camera.takePictureAsync({quality: 0.75}).then(data => {
-            this.setState({loading: true, image: data.uri})        
-            this.uploadImage(data.uri)
-            Vibration.vibrate();
-          });
+            Vibration.vibrate();        
+            this.camera.takePictureAsync({quality: 0.75}).then(data => {
+                this.setState({loading: true, image: data.uri})        
+                this.uploadImage(data.uri)
+            });
         }
     };
 
@@ -300,38 +303,55 @@ export default class App extends React.Component {
 
 
         return(
-            <KeyboardAvoidingView 
-                style={{flex: 1}}  
-                behavior="padding" enabled>
+            <View style={{flex: 1}}>
+
+                <Prompt
+                    title="License Plate"
+                    visible={this.state.prompt}
+                    placeholder="License Plate"
+                    onChangeText={(text) => {
+                        this.setState({licensePlateText: text})
+                    }}
+                    onCancel={() => {
+                        this.setState({prompt: false, licensePlateText: ''})
+                    }}
+                    onSubmit={() => {
+                        this.getVinFromLicensePlate(this.state.licensePlateText)
+                        this.setState({prompt: false, licensePlateText: ''})
+                    }}
+                />
 
                 <Loader loading={this.state.loading}/>
                 {this.getCamera()}
                 <View style={styles.container}>
-                    {
-                        this.state.camera == true ?
-                        <Button 
-                            style={styles.component} 
-                            title='Snap' 
+                    <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                        <Icon
+                            reverse
+                            containerStyle={{margin: 25}}
+                            size={30}
+                            name={this.state.flash ? 'flash-on' : 'flash-off'}
+                            onPress={() => {
+                                this.state.flash ? this.setState({flash: false}) : this.setState({flash: true})
+                            }} 
+                        />
+                        <Icon
+                            reverse
+                            containerStyle={{margin: 25}}
+                            size={30}
+                            name='camera-alt'
                             onPress={this.takePicture.bind(this)} 
                         />
-                        : null
-                    }
-                    <Input
-                        containerStyle={styles.component} 
-                        placeholder='License Plate'
-                        rightIcon=  {{ 
-                                        type: 'font-awesome', 
-                                        name: 'search',
-                                        onPress: () => this.getVinFromLicensePlate(this.state.licensePlateText)
-                                    }}
-                        onChangeText={(text) => this.setState({licensePlateText: text})}
-                        onSubmitEditing={() => this.getVinFromLicensePlate(this.state.licensePlateText)}
-                        onFocus={() => this.setState({camera: false})}
-                        onBlur={() => this.setState({camera: true})}
-                    />
+                        <Icon
+                            reverse
+                            containerStyle={{margin: 25}}
+                            size={30}
+                            name='info-outline' 
+                            onPress={() => this.setState({prompt: true})}
+                        />
+                    </View>
                     <Text style={{fontSize: 15, fontStyle: 'italic', margin: 10}}>Take a picture of a car's license plate or enter it manually</Text>
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         )
     }
 }
