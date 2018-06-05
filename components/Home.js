@@ -12,7 +12,7 @@ import { Constants, Camera, FileSystem, Permissions } from 'expo';
 export default class App extends React.Component {
 
     state = {
-        licensePlateText: "",
+        licensePlateText: "bszl403",
         prompt: false,
         image: null,
         loading: false,
