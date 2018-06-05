@@ -205,7 +205,7 @@ export default class App extends React.Component {
             result = JSON.parse(xmlhttp.responseText);
 
             if(result.objects.length == 0 || result.objects[0].vehicleAnnotation.recognitionConfidence === 0){
-                this.error('License plate cannot be read. Please try again by entering the license plate number manually.')
+                this.setState({prompt: true, loading: false})
                 return
             }
     
@@ -217,7 +217,7 @@ export default class App extends React.Component {
             if(licensePlate !== 'Not Found'){
                 this.getVinFromLicensePlate(licensePlate)
             } else {
-                this.error('License plate cannot be read. Please try again by entering the license plate number manually.')
+                this.setState({prompt: true, loading: false})
             }
           }
         }).bind(this)
