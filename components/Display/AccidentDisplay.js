@@ -15,8 +15,8 @@ export default class AccidentDisplay extends React.Component {
         iconColour = this.props.vhrReport.AccidentEvents === null ? '#3890EA' : '#E2001D'
         iconName = this.props.vhrReport.AccidentEvents === null ? 'smile-o' : 'warning'
         text = this.props.vhrReport.AccidentEvents === null 
-            ? 'No accidents reported' 
-            : this.props.vhrReport.AccidentEvents.length + ' accident(s) reported'  
+            ? 'No Accidents Reported' 
+            : this.props.vhrReport.AccidentEvents.length + ' Accident(s) Reported'  
 
         return (
             <View style={styles.rows} >

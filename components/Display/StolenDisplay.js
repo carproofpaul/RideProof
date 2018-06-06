@@ -14,7 +14,7 @@ export default class StolenDisplay extends React.Component {
 
         iconColour = this.props.vhrReport.StolenEvents === null ? '#3890EA' : '#E2001D'
         iconName = this.props.vhrReport.StolenEvents === null ? 'check' : 'warning'
-        text = this.props.vhrReport.StolenEvents === null ? 'Not reported stolen' : 'Vehicle reported stolen'
+        text = this.props.vhrReport.StolenEvents === null ? 'Not Reported Stolen' : 'Vehicle Reported Stolen'
 
         return (
             <View style={styles.rows}>
