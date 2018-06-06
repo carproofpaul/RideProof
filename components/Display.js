@@ -54,8 +54,8 @@ export default class Display extends React.Component {
         // else console.log("not")
 
         return(
-            <View style={{margin: 10}}>
-                <RatingDisplay recalls={this.props.recalls}/>
+            <View style={{alignItems: 'center', margin: 10}}>
+                <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>
                 <Text> </Text>
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
                     <AccidentDisplay vhrReport={this.props.vhrReport}/>
