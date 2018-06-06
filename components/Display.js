@@ -31,7 +31,7 @@ export default class Display extends React.Component {
     
 
     getContent(){
-
+        
         return(
             <View style={{alignItems: 'center', margin: 10}}>
                 <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>
