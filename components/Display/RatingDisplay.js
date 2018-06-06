@@ -8,18 +8,15 @@ import { ListItem, Divider } from 'react-native-elements';
 import moment from 'moment';
 
 
-export default class RecallDisplay extends React.Component {
+export default class RatingDisplay extends React.Component {
     
     render() {
 
         return (
-            <View>
-            {
-                this.props.vhrReport.RecallEvents === null ? null : 
-                <Icon raised name='warning'color='#E2001D' size={40}>
-                    <Text style={styles.list}>Recall(s) reported</Text>
-                </Icon>
-            }
+            <View style={{alignItems: 'center', margin: 10}}>
+                <Text style={{fontSize: 30, fontWeight: 'bold'}}>7/10 PROOFSCORE</Text>
+                <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
+                <Text>{this.props.recalls.Vin}</Text>                
             </View>
         )
     }

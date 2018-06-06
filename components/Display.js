@@ -13,6 +13,7 @@ import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
 import AccidentDisplay from './Display/AccidentDisplay';
 import StolenDisplay from './Display/StolenDisplay';
 import RecallDisplay from './Display/RecallDisplay';
+import RatingDisplay from './Display/RatingDisplay';
 
 export default class Display extends React.Component {
 
@@ -49,8 +50,7 @@ export default class Display extends React.Component {
 
         return(
             <View style={{alignItems: 'center', margin: 10}}>
-                <Text>{this.props.recalls.Vin}</Text>
-                <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
+                <RatingDisplay recalls={this.props.recalls}/>
                 <Text> </Text>
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
                     <AccidentDisplay vhrReport={this.props.vhrReport}/>
