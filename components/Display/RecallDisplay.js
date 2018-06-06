@@ -15,10 +15,12 @@ export default class RecallDisplay extends React.Component {
         return (
             <View>
             {
-                this.props.vhrReport.RecallEvents === null ? null : 
-                <Icon raised name='warning'color='#E2001D' size={40}>
-                    <Text style={styles.list}>Recall(s) reported</Text>
-                </Icon>
+                this.props.vhrReport.RecallEvents === null ? 
+                null : 
+                <View style={styles.rows} >
+                <Icon raised name='warning'color='#E2001D' size={40}></Icon>
+                <Text style={styles.list}>Recall(s) reported</Text>
+                </View>
             }
             </View>
         )
@@ -26,8 +28,13 @@ export default class RecallDisplay extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    rows: {
+        flexDirection: 'row', 
+        paddingBottom: 10
+      },
     list: {
         color: 'black',
         fontSize: 18,
+        paddingLeft: 10,
     },
 });

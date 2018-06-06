@@ -13,18 +13,18 @@ export default class RatingDisplay extends React.Component {
     render() {
 
         return (
-            <View style={{alignItems: 'center', margin: 10}}>
+            <View style={{alignItems: 'center', margin: 5}}>
+            <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>7/10 PROOFSCORE</Text>
-                <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
-                <Text>{this.props.recalls.Vin}</Text>                
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    list: {
-        color: 'black',
-        fontSize: 18,
+    header: {
+        fontSize: 25,
+        fontWeight: 'bold',
     },
+
 });

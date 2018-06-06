@@ -14,6 +14,7 @@ import AccidentDisplay from './Display/AccidentDisplay';
 import StolenDisplay from './Display/StolenDisplay';
 import RecallDisplay from './Display/RecallDisplay';
 import RatingDisplay from './Display/RatingDisplay';
+import ServiceDisplay from './Display/ServiceDisplay';
 
 export default class Display extends React.Component {
 
@@ -53,7 +54,7 @@ export default class Display extends React.Component {
         // else console.log("not")
 
         return(
-            <View style={{alignItems: 'center', margin: 10}}>
+            <View style={{margin: 10}}>
                 <RatingDisplay recalls={this.props.recalls}/>
                 <Text> </Text>
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
@@ -64,7 +65,7 @@ export default class Display extends React.Component {
                     <RecallDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
-                    <ServiceEvents vhrReport={this.props.vhrReport}/>
+                    <ServiceDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
                     <Text>Information on Reports</Text>
@@ -105,26 +106,3 @@ export default class Display extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  component: {
-      margin: 30,
-  },
-  header: {
-      fontSize: 25,
-      fontWeight: 'bold',
-  },
-  list: {
-      color: 'black',
-      fontSize: 18,
-  },
-  info: {
-      fontSize: 18,
-      textAlign: 'center',
-  }
-});
