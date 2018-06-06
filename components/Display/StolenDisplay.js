@@ -16,12 +16,15 @@ export default class StolenDisplay extends React.Component {
             <View>
             {
                 this.props.vhrReport.StolenEvents === null ? 
-                    <Icon name='check' color='#3890EA' size={40}>
-                    <Text style={styles.list}>Not reported stolen</Text></Icon> 
+                <View style={styles.rows}>
+                    <Icon name='check' color='#3890EA' size={40}></Icon> 
+                    <Text style={styles.list}>Not reported stolen</Text>
+                </View>
                 : 
-                    <Icon raised name='warning'color='#E2001D' size={40}>
-                        <Text>Vehicle reported stolen</Text>
-                    </Icon>
+                <View style={styles.rows}>
+                    <Icon raised name='warning'color='#E2001D' size={40}></Icon>
+                    <Text style={styles.list}>Vehicle reported stolen</Text>
+                </View>
             }
             </View>
         )
@@ -29,8 +32,13 @@ export default class StolenDisplay extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    rows: {
+        flexDirection: 'row', 
+        paddingBottom: 10
+      },
     list: {
         color: 'black',
         fontSize: 18,
+        paddingLeft: 10,
     },
 });
