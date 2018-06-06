@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Modal, TouchableOpacity, Dimensions } from 'react-native';
 import CameraScreen from './CameraScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
@@ -23,7 +23,11 @@ export default class Display extends React.Component {
         component: null,
         modalVisible: false,
     }
-
+    
+    getWindow() {
+        return Dimensions.get('window')
+    }
+    
 
     getContent(){
         //Find last service date
