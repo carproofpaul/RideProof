@@ -28,10 +28,11 @@ export default class ServiceDisplay extends React.Component {
 
         } catch(error){}
 
-        iconColour = this.props.vhrReport.ServiceEvents === null ? '#3890EA' : '#E2001D'
-        iconName = this.props.vhrReport.ServiceEvents === null ? 'wrench' : 'warning'
-        text = this.props.vhrReport.ServiceEvents === null ? null : inRange
-            ? 'Last service reported' + lastServ.split(' ').slice(1,4).join(' ')
+        iconColour = this.props.vhrReport.ServiceEvents === null ? '#E2001D' : inRange ? '#3890EA' : '#E2001D'
+        // iconName = inRange==true ? 'wrench' : 'warning'
+        iconName = this.props.vhrReport.ServiceEvents === null ? 'warning' : inRange? 'wrench' : 'warning'
+        text = this.props.vhrReport.ServiceEvents === null ? 'No service records found' : inRange
+            ? 'Last service reported ' + lastServ.split(' ').slice(1,4).join(' ')
             : 'Vehicle has no reported service \nin the last year'
 
         return (
