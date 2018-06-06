@@ -313,7 +313,7 @@ export default class App extends React.Component {
 
 
         return(
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 <Prompt
                     title="License Plate"
@@ -323,7 +323,7 @@ export default class App extends React.Component {
                         this.setState({licensePlateText: text})
                     }}
                     onCancel={() => {
-                        this.setState({prompt: false, licensePlateText: ''})
+                        this.setState({prompt: false, licensePlateText: '', image: null})
                     }}
                     onSubmit={() => {
                         this.getVinFromLicensePlate(this.state.licensePlateText)

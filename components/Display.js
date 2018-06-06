@@ -48,6 +48,7 @@ export default class Display extends React.Component {
             <Modal
                 animationType="slide"
                 visible={true}
+                backgroundColor='white'
                 onRequestClose={() => {
                     this.state.component ?
                     this.setState({component: null}) :
