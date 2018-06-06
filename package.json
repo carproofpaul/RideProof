@@ -26,6 +26,7 @@
     "react-native-elements": "^1.0.0-beta5",
     "react-native-prompt-crossplatform": "^1.6.1",
     "react-native-prompt-simple": "0.0.1",
+    "react-native-simple-gauge": "^0.1.10",
     "rn-prompt": "^1.0.3"
   }
 }

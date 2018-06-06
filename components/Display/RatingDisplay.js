@@ -6,6 +6,8 @@ import { Token } from '../../resources/Token';
 import Loader from '../Loader';
 import { ListItem, Divider } from 'react-native-elements';
 import moment from 'moment';
+import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
+
 
 
 export default class RatingDisplay extends React.Component {
@@ -74,20 +76,60 @@ export default class RatingDisplay extends React.Component {
             else if(numberOfService == 1) scale++
         } else {scale = scale + 2}
 
+        circleColor = ''
+        if(scale < 5){
+            circleColor = 'red'
+        } else if(scale < 7){
+            circleColor = 'blue'
+        } else {
+            circleColor = 'green'
+        }
+
+        percent = scale/10*100
 
         return (
             <View style={{alignItems: 'center', margin: 10}}>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>{scale}/10 PROOFSCORE</Text>
-                <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
-                <Text>{this.props.recalls.Vin}</Text>                
+                <AnimatedGaugeProgress
+                    size={200}
+                    width={20}
+                    fill={percent}
+                    rotation={90}
+                    cropDegree={180}
+                    tintColor={circleColor}
+                    backgroundColor="#999999"
+                    stroke={[2, 2]} //For a equaly dashed line
+                    strokeCap="circle">
+                    <View style={styles.textView}>
+                        <Text style={styles.text}>{percent.toFixed(0)}%</Text>
+                        <Text style={{fontSize: 15, fontStyle: 'italic'}}>Safety Score</Text>
+                    </View>
+                </AnimatedGaugeProgress>
+                <Text style={{fontSize: 20}}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
+                <Text>{this.props.recalls.Vin}</Text>  
             </View>
         )
     }
 }
 
+const size = 200;
+const width = 20;
+const cropDegree = 90;
+const textOffset = width;
+const textWidth = size - (textOffset*2);
+const textHeight = size*(1 - cropDegree/360) - (textOffset*2);
+
 const styles = StyleSheet.create({
-    list: {
-        color: 'black',
-        fontSize: 18,
-    },
+    textView: {
+        position: 'absolute',
+        top: textOffset,
+        left: textOffset,
+        width: textWidth,
+        height: textHeight,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      text: {
+        fontSize: 50,
+        fontWeight: 'bold'
+      },
 });
