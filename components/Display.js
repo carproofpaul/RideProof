@@ -31,28 +31,7 @@ export default class Display extends React.Component {
     
 
     getContent(){
-        //Find last service date
-        var serv = null
-        var currentDate = new Date();
-        var yearAgo = new Date();
-        var inRange = true
-        yearAgo.setFullYear(yearAgo.getFullYear()-1);
-
-        try {
-            serv = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
-            lastServ = serv.toString();
-
-            if(serv < currentDate && serv > yearAgo)
-                inRange=true;
-            else 
-                inRange=false;
-
-        } catch(error){}
-
-        // if(serv <= currentDate && serv >= yearAgo)
-        // console.log("Within range!")
-        // else console.log("not")
-
+        
         return(
             <View style={{marginLeft: 10, marginRight: 10}}>
                 <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>

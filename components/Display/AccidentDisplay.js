@@ -12,34 +12,29 @@ export default class AccidentDisplay extends React.Component {
     
     render() {
 
+        iconColour = this.props.vhrReport.AccidentEvents === null ? '#3890EA' : '#E2001D'
+        iconName = this.props.vhrReport.AccidentEvents === null ? 'smile-o' : 'warning'
+        text = this.props.vhrReport.AccidentEvents === null 
+            ? 'No Accidents Reported' 
+            : this.props.vhrReport.AccidentEvents.length + ' Accident(s) Reported'  
+
         return (
-            <View >
-            {
-                this.props.vhrReport.AccidentEvents === null 
-                ? 
-                    <View style={styles.rows} >
-                        <Icon raised name='smile-o'color='#3890EA' size={40} />
-                        <Text style={styles.list} >No accidents reported</Text>
-                    </View>
-                : 
-                    <View style={styles.rows} >
-                        <Icon raised name='warning'color='#E2001D' size={40}></Icon>
-                        <Text style={styles.list}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>
-                    </View>
-            }
+            <View style={styles.rows} >
+                <Icon raised name={iconName} color={iconColour} size={40} />
+                <Text style={styles.text}>{text}</Text>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-  rows: {
-    flexDirection: 'row', 
-    paddingBottom: 10
-  },
-  list: {
-    color: 'black',
-    fontSize: 18,
-    paddingLeft: 10,
-},
+    rows: {
+        flexDirection: 'row', 
+        margin: 10
+    },
+    text: {
+        color: 'black',
+        fontSize: 18,
+        margin: 10,
+    },
 });

@@ -12,16 +12,14 @@ export default class RecallDisplay extends React.Component {
     
     render() {
 
+        iconColour = this.props.vhrReport.RecallEvents === null ? '#3890EA' : '#E2001D'
+        iconName = this.props.vhrReport.RecallEvents === null ? 'check' : 'warning'
+        text = this.props.vhrReport.RecallEvents === null ? 'No Recalls Found' : 'Recall(s) Reported'
+
         return (
-            <View>
-            {
-                this.props.vhrReport.RecallEvents === null ? 
-                null : 
-                <View style={styles.rows} >
-                <Icon raised name='warning'color='#E2001D' size={40}></Icon>
-                <Text style={styles.list}>Recall(s) reported</Text>
-                </View>
-            }
+            <View style={styles.rows} >
+                <Icon raised name={iconName} color={iconColour} size={40} />
+                <Text style={styles.text}>{text}</Text>
             </View>
         )
     }
@@ -30,11 +28,13 @@ export default class RecallDisplay extends React.Component {
 const styles = StyleSheet.create({
     rows: {
         flexDirection: 'row', 
-        paddingBottom: 10
-      },
-    list: {
+        margin: 10,
+    },
+    text: {
         color: 'black',
         fontSize: 18,
-        paddingLeft: 10,
+        margin: 10,
+        flexWrap: 'wrap'
     },
 });
+
