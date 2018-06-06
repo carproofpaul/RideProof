@@ -28,22 +28,16 @@ export default class ServiceDisplay extends React.Component {
 
         } catch(error){}
 
+        iconColour = this.props.vhrReport.ServiceEvents === null ? '#3890EA' : '#E2001D'
+        iconName = this.props.vhrReport.ServiceEvents === null ? 'wrench' : 'warning'
+        text = this.props.vhrReport.ServiceEvents === null ? null : inRange
+            ? 'Last service reported' + lastServ.split(' ').slice(1,4).join(' ')
+            : 'Vehicle has no reported service \nin the last year'
+
         return (
-            <View>
-                {
-                    this.props.vhrReport.ServiceEvents === null ? 
-                    null : 
-                    inRange == true ? 
-                    <View style={styles.rows}>
-                        <Icon name='wrench' color='#3890EA' size={40}></Icon> 
-                        <Text style={styles.list}>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text>
-                    </View>
-                    :
-                    <View style={styles.rows}>
-                        <Icon name='warning' color='#E2001D' size={40}></Icon>
-                        <Text style={styles.list}>Vehicle has no reported service in the last year</Text>
-                        </View>
-                }
+            <View style={styles.rows}>
+                <Icon name={iconName} color={iconColour} size={40} />
+                <Text style={styles.text}>{text}</Text>
             </View>
         )
     }
@@ -52,11 +46,12 @@ export default class ServiceDisplay extends React.Component {
 const styles = StyleSheet.create({
     rows: {
         flexDirection: 'row', 
-        paddingBottom: 10
-      },
-    list: {
+        margin: 10,
+    },
+    text: {
         color: 'black',
         fontSize: 18,
-        paddingLeft: 10,
+        margin: 10,
+        flexWrap: 'wrap'
     },
 });
