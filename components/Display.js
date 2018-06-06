@@ -7,6 +7,8 @@ import { Token } from '../resources/Token';
 import Loader from './Loader';
 import TermsServices from './TermsServices';
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
+import RecallEvents from './VehicleHistoryReport/RecallEvents';
+import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
 
 export default class Display extends React.Component {
 
@@ -42,7 +44,7 @@ export default class Display extends React.Component {
         // else console.log("not")
 
         return(
-            <View>
+            <View style={{alignItems: 'center', margin: 10}}>
                 <Text>{this.props.recalls.Vin}</Text>
                 <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
                 <Text> </Text>
@@ -50,10 +52,14 @@ export default class Display extends React.Component {
                     <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
                         {
                             this.props.vhrReport.AccidentEvents === null ? 
-                            <Icon raised name='smile-o'color='#3890EA' size={40}>
-                            <Text style={styles.list}>No accidents reported</Text></Icon> : 
-                            <Icon raised name='warning'color='#E2001D' size={40}>
-                            <Text style={styles.list}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text> </Icon>
+                            <View>
+                            <Icon raised name='smile-o'color='#3890EA' size={40}></Icon>
+                            <Text style={styles.list}>No accidents reported</Text>
+                            </View> : 
+                            <View>
+                            <Icon raised name='warning'color='#E2001D' size={40}></Icon>
+                            <Text style={styles.list}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>
+                            </View>
                         }
                     </TouchableOpacity>
                 }
@@ -64,33 +70,50 @@ export default class Display extends React.Component {
                     <Icon raised name='warning'color='#E2001D' size={40}>
                     <Text style={styles.danger}>Vehicle reported stolen</Text></Icon>
                 }
-                {
-                    this.props.vhrReport.ServiceEvents === null ? 
-                    null : 
-                    inRange==true ? 
-                    <Icon name='wrench' color='#3890EA' size={40}>
-                    <Text style={styles.list}>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text></Icon> :
-                    <Icon name='warning' color='#E2001D' size={40}>
-                <Text style={styles.list}>Vehicle has no reported service in the last year</Text></Icon> }
+
+                
                 {
                     this.props.recalls.Recalls === null ?
                     null : 
                     <Icon raised name='warning'color='#E2001D' size={40}>
                     <Text style={styles.list}>Recall(s) reported</Text></Icon>
                 }
-                {
-                    <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
+
+                {    
+                    <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
                         {
-                            <Text>Information on Reports</Text>
+                    this.props.vhrReport.ServiceEvents === null ? 
+                    null : 
+                    inRange==true ? 
+                    <Icon name='wrench' color='#3890EA' size={40}>
+                    <Text style={styles.list}>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text></Icon> :
+                    <Icon name='warning' color='#E2001D' size={40}>
+                <Text style={styles.list}>Vehicle has no reported service in the last year</Text></Icon> 
+            }
+                        
+                    </TouchableOpacity>
+                }
+                {
+                    <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
+                        {
+                            this.props.recalls.Recalls === null ?
+                            null : 
+                            <Text style={styles.danger}>Recalls reported</Text>
                         }
                     </TouchableOpacity>
                 }
+                {
+                <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
+                        {
+                            <Text>Information on Reports</Text>
+                        }
+                        </TouchableOpacity>
+                        }
             </View>
         )
     }
 
     render() {
-    
         return(
             <Modal
             animationType="slide"
@@ -101,6 +124,16 @@ export default class Display extends React.Component {
                 this.props.onClose()
             }}>
             <View style={{marginTop: 22, marginLeft:10}}>
+                <Icon
+                    name={(this.state.component) ? 'chevron-left' : 'chevron-down'}
+                    size={20}
+                    style={{margin: 10}}
+                    onPress={() => {
+                        this.state.component ?
+                        this.setState({component: null}) :
+                        this.props.onClose()
+                    }}
+                />
                 {
                     this.state.component ?
                     this.state.component :
