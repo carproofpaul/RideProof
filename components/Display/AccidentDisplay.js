@@ -16,7 +16,7 @@ export default class AccidentDisplay extends React.Component {
         iconName = this.props.vhrReport.AccidentEvents === null ? 'smile-o' : 'warning'
         text = this.props.vhrReport.AccidentEvents === null 
             ? 'No accidents reported' 
-            : this.props.vhrReport.AccidentEvents.length + ' accident(s) reported'
+            : this.props.vhrReport.AccidentEvents.length + ' accident(s) reported'  
 
         return (
             <View style={styles.rows} >
@@ -28,13 +28,13 @@ export default class AccidentDisplay extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  rows: {
-    flexDirection: 'row', 
-    margin: 10
-  },
-  text: {
-    color: 'black',
-    fontSize: 18,
-    margin: 10,
-},
+    rows: {
+        flexDirection: 'row', 
+        margin: 10
+    },
+    text: {
+        color: 'black',
+        fontSize: 18,
+        margin: 10,
+    },
 });
