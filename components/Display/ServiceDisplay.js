@@ -16,9 +16,6 @@ export default class ServiceDisplay extends React.Component {
         try {
             var serv = moment(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date.split('T')[0])
             lastServ = serv.toString();
-            console.log(serv)
-            console.log(currentDate)
-
             if(currentDate.diff(serv, 'years', true) <=1) {
                 var inRange=true;
             }

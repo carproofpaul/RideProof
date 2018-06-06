@@ -15,6 +15,7 @@ import StolenDisplay from './Display/StolenDisplay';
 import RecallDisplay from './Display/RecallDisplay';
 import RatingDisplay from './Display/RatingDisplay';
 import ServiceDisplay from './Display/ServiceDisplay';
+import RegistrationDisplay from './Display/RegistrationDisplay';
 
 export default class Display extends React.Component {
 
@@ -26,7 +27,7 @@ export default class Display extends React.Component {
     getContent(){
 
         return(
-            <ScrollView style={{marginHorizontal: 10}}>
+            <ScrollView style={{margin: 10}}>
                 <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>
 
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
@@ -39,10 +40,12 @@ export default class Display extends React.Component {
                 <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
                     <ServiceDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
+                <RegistrationDisplay vhrReport={this.props.vhrReport}/>
 
                 <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
                     <Text>Information on Reports</Text>
                 </TouchableOpacity>
+                
             </ScrollView>
         )
     }
