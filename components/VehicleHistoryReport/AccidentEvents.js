@@ -22,12 +22,21 @@ export default class AccidentEvents extends React.Component {
     }
     
     render() {
+        //null check
+        if(this.props.data == null){
+            return(
+                <View>
+                    <Text style={{fontStyle: 'italic', margin: 10, textAlign: 'center'}}>No Accident Events Available</Text>
+                </View>
+            )
+        }
+
         return (
             <ScrollView style={{margin: 10}}>
                 <Text style={{fontWeight: 'bold', fontSize: 25}}>Accident Events</Text>
                 <Divider style={{marginVertical: 10}}/>
                 {
-                    this.props.data.map((value, i) => (
+                    this.props.data.reverse().map((value, i) => (
                     <ListItem
                         key={i}
                         title={'Point of Impact: ' + value.PointOfImpact}
