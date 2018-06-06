@@ -54,9 +54,10 @@ export default class Display extends React.Component {
         // else console.log("not")
 
         return(
-            <View style={{alignItems: 'center', margin: 10}}>
+            <View style={{marginLeft: 10, marginRight: 10}}>
                 <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>
-                <Text> </Text>
+
+                {/* <View style={{left: 10, right: 10}}> */}
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
                     <AccidentDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
@@ -70,6 +71,8 @@ export default class Display extends React.Component {
                 <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
                     <Text>Information on Reports</Text>
                 </TouchableOpacity>
+                {/* </View> */}
+
             </View>
         )
     }

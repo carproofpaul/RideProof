@@ -88,7 +88,7 @@ export default class RatingDisplay extends React.Component {
         percent = scale/10*100
 
         return (
-            <View>
+            <View style={{alignItems: 'center'}}>
                 <AnimatedGaugeProgress
                     size={200}
                     width={20}
@@ -104,8 +104,7 @@ export default class RatingDisplay extends React.Component {
                         <Text style={{fontSize: 15, fontStyle: 'italic'}}>Safety Score</Text>
                     </View>
                 </AnimatedGaugeProgress>
-                <Text style={{fontSize: 20}}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
-                <Text>{this.props.recalls.Vin}</Text>                
+                <Text style={{fontSize: 25, fontWeight: 'bold', paddingBottom:10}}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>              
             </View>
         )
     }

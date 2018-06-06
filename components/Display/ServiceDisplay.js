@@ -12,19 +12,19 @@ export default class ServiceDisplay extends React.Component {
     
     render() {
 
-        var currentDate = new Date();
-        var yearAgo = new Date();
-        yearAgo.setFullYear(yearAgo.getFullYear()-1);
-
-        var inRange = true
+        var currentDate = new moment();
         try {
-            var serv = new Date(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date);
+            var serv = moment(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date.split('T')[0])
             lastServ = serv.toString();
+            console.log(serv)
+            console.log(currentDate)
 
-            if(serv < currentDate && serv > yearAgo)
-                inRange=true;
-            else 
-                inRange=false;
+            if(currentDate.diff(serv, 'years', true) <=1) {
+                var inRange=true;
+            }
+            else {
+                var inRange=false;
+            }
 
         } catch(error){}
 
