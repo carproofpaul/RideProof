@@ -10,6 +10,10 @@ import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 import RecallEvents from './VehicleHistoryReport/RecallEvents';
 import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
 
+import AccidentDisplay from './Display/AccidentDisplay';
+import StolenDisplay from './Display/StolenDisplay';
+import RecallDisplay from './Display/RecallDisplay';
+
 export default class Display extends React.Component {
 
 //TOKEN: 5bd73da3-1a7a-4dc4-9680-afc7b9faaae0
@@ -48,67 +52,19 @@ export default class Display extends React.Component {
                 <Text>{this.props.recalls.Vin}</Text>
                 <Text style={styles.header}>{this.props.recalls.ModelYear + " " + this.props.recalls.Make + " " + this.props.recalls.Model}</Text>
                 <Text> </Text>
-                {
-                    <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
-                        {
-                            this.props.vhrReport.AccidentEvents === null ? 
-                            <View>
-                            <Icon raised name='smile-o'color='#3890EA' size={40}></Icon>
-                            <Text style={styles.list}>No accidents reported</Text>
-                            </View> : 
-                            <View>
-                            <Icon raised name='warning'color='#E2001D' size={40}></Icon>
-                            <Text style={styles.list}>{this.props.vhrReport.AccidentEvents.length} accident(s) reported</Text>
-                            </View>
-                        }
-                    </TouchableOpacity>
-                }
-                {
-                    this.props.vhrReport.StolenEvents === null ? 
-                    <Icon name='check' color='#3890EA' size={40}>
-                    <Text style={styles.list}>Not reported stolen</Text></Icon> : 
-                    <Icon raised name='warning'color='#E2001D' size={40}>
-                    <Text style={styles.danger}>Vehicle reported stolen</Text></Icon>
-                }
-
-                
-                {
-                    this.props.recalls.Recalls === null ?
-                    null : 
-                    <Icon raised name='warning'color='#E2001D' size={40}>
-                    <Text style={styles.list}>Recall(s) reported</Text></Icon>
-                }
-
-                {    
-                    <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
-                        {
-                    this.props.vhrReport.ServiceEvents === null ? 
-                    null : 
-                    inRange==true ? 
-                    <Icon name='wrench' color='#3890EA' size={40}>
-                    <Text style={styles.list}>Last service reported {lastServ.split(' ').slice(1,4).join(' ')}</Text></Icon> :
-                    <Icon name='warning' color='#E2001D' size={40}>
-                <Text style={styles.list}>Vehicle has no reported service in the last year</Text></Icon> 
-            }
-                        
-                    </TouchableOpacity>
-                }
-                {
-                    <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
-                        {
-                            this.props.recalls.Recalls === null ?
-                            null : 
-                            <Text style={styles.danger}>Recalls reported</Text>
-                        }
-                    </TouchableOpacity>
-                }
-                {
+                <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
+                    <AccidentDisplay vhrReport={this.props.vhrReport}/>
+                </TouchableOpacity>
+                <StolenDisplay vhrReport={this.props.vhrReport}/>
+                <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
+                    <RecallDisplay vhrReport={this.props.vhrReport}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
+                    <ServiceEvents vhrReport={this.props.vhrReport}/>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
-                        {
-                            <Text>Information on Reports</Text>
-                        }
-                        </TouchableOpacity>
-                        }
+                    <Text>Information on Reports</Text>
+                </TouchableOpacity>
             </View>
         )
     }
