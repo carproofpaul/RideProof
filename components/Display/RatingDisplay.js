@@ -19,17 +19,20 @@ export default class RatingDisplay extends React.Component {
         //Registration 1 for registered, 3 for not
         if(this.props.vhrReport.TitleOrRegistrationEvents !== null){
             isRegistered = false
+            isCommercial = false
             now = moment()
             
             for(i = 0; i < this.props.vhrReport.TitleOrRegistrationEvents.length; i++){
                 then = moment(this.props.vhrReport.TitleOrRegistrationEvents[i].Date.split('T')[0])
-                if( then.diff(now, 'years', true) <= 2 ){
+                if( now.diff(then, 'years', true) <= 2 ){
                     isRegistered = true
+                    isCommercial = this.props.vhrReport.TitleOrRegistrationEvents[i].UseType == 'Commercial_Use'
                 }
             }
 
-            if(isRegistered == true) scale = scale + 1
-            else scale = scale - 3
+            if(isCommercial == true) {scale = scale + 0.5}
+            if(isRegistered == true) {scale = scale + 0.5}
+            else {scale = scale - 3}
         }
 
         //ACCIDENT 0 - 3
