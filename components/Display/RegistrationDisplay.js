@@ -26,7 +26,7 @@ export default class RegistrationDisplay extends React.Component {
         iconName = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'warning' : 'check' 
         text = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  
         ? 'Vehicle never registered' : this.useType=="Commercial_Use" 
-        ? 'Vehicle registered for commerical use' : 'Vehicle currently registered' 
+        ? 'Vehicle registered for commerical use' : 'Vehicle registered for non-commerical use' 
 
         return (
             <View style={styles.rows} >
