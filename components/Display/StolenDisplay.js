@@ -1,11 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../../resources/Token';
-import Loader from '../Loader';
-import { ListItem, Divider } from 'react-native-elements';
-import moment from 'moment';
 
 
 export default class StolenDisplay extends React.Component {
