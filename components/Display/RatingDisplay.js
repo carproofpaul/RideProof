@@ -101,7 +101,8 @@ export default class RatingDisplay extends React.Component {
                     tintColor={circleColor}
                     backgroundColor="#999999"
                     stroke={[2, 2]} //For a equaly dashed line
-                    strokeCap="circle">
+                    strokeCap="circle"
+                    style={{marginBottom:-60}}>
                     <View style={styles.textView}>
                         <Text style={styles.text}>{percent.toFixed(0)}%</Text>
                         <Text style={{fontSize: 15, fontStyle: 'italic'}}>Safety Score</Text>
