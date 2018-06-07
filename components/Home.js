@@ -312,7 +312,7 @@ export default class App extends React.Component {
                     }}
                     onSubmit={() => {
                         this.getVinFromLicensePlate(this.state.licensePlateText)
-                        this.setState({prompt: false, licensePlateText: ''})
+                        this.setState({prompt: false, licensePlateText: '', image: 'white'})
                     }}
                 />
 
