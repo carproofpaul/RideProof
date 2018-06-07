@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Modal, KeyboardAvoidingView   } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Clipboard   } from 'react-native';
 import CameraScreen from './CameraScreen';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Icon } from 'react-native-elements';
@@ -7,7 +7,7 @@ import { Token } from '../resources/Token';
 import Loader from './Loader';
 import Display from './Display';
 import Prompt from 'rn-prompt';
-import { Camera, Permissions, AppLoading  } from 'expo';
+import { Camera, Permissions  } from 'expo';
 
 export default class App extends React.Component {
 
@@ -24,7 +24,15 @@ export default class App extends React.Component {
         flash: false,
     }
 
+    
+    async _getClipBoard() {
+        var content = await Clipboard.getString();
+        console.log(content);
+        
+    }
+
     async componentWillMount() {
+        this._getClipBoard()
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({ permissionsGranted: status === 'granted', isReady: true });
     }

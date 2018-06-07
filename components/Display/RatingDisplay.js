@@ -41,8 +41,8 @@ export default class RatingDisplay extends React.Component {
                 }
             }
 
-            if(numberOfAccidents == 0) scale = scale + 4
-            else if(numberOfAccidents == 1) scale = scale + 2
+            if(numberOfAccidents == 0) scale = scale + 3
+            else if(numberOfAccidents == 1) scale = scale + 1.5
             //numberOfAccidents > 1, bad 
         } else {scale = scale + 3}
 
