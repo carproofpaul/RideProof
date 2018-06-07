@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Modal, KeyboardAvoidingView  } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Modal, KeyboardAvoidingView   } from 'react-native';
 import CameraScreen from './CameraScreen';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Icon } from 'react-native-elements';
@@ -7,11 +7,13 @@ import { Token } from '../resources/Token';
 import Loader from './Loader';
 import Display from './Display';
 import Prompt from 'rn-prompt';
-import { Constants, Camera, FileSystem, Permissions } from 'expo';
+import { Camera, Permissions, AppLoading  } from 'expo';
 
 export default class App extends React.Component {
 
     state = {
+        isReady: false,
+
         licensePlateText: "bszl403",
         prompt: false,
         image: null,
@@ -24,8 +26,8 @@ export default class App extends React.Component {
 
     async componentWillMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({ permissionsGranted: status === 'granted' });
-      }
+        this.setState({ permissionsGranted: status === 'granted', isReady: true });
+    }
 
     getCamera(){
         /*
@@ -93,7 +95,6 @@ export default class App extends React.Component {
      */
     getRecalls(vin){
         var xmlhttp = new XMLHttpRequest();
-        var result;
     
         xmlhttp.onreadystatechange = (function () {
           if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -154,13 +155,14 @@ export default class App extends React.Component {
      * @param {license plate number} licensePlate 
      */
     getVinFromLicensePlate(licensePlate){
-        if(licensePlate === '') return
+        if(licensePlate === ''){
+            this.setState({image: null})
+            return
+        }
 
         this.setState({loading: true})
 
         var xmlhttp = new XMLHttpRequest();
-        var result;
-    
         xmlhttp.onreadystatechange = (function () {
           if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             //DATA
@@ -279,38 +281,21 @@ export default class App extends React.Component {
 
     render() {
 
+        //show loader until camera is ready
+        if (!this.state.isReady) {
+            return (
+                <View>
+                    <Loader loading={!this.state.isReady}/>
+                </View>
+            );
+        }
+
+
         if(this.state.modalVisible==true) {
             return(
                 <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false, image:null})} />
             )
         }
-        
-        /*
-            this.state.camera == true 
-            ?   content = this.getCamera()
-            :   content =
-                    <View style={styles.container}>
-                        <Loader loading={this.state.loading}/>
-                        <Image source={{uri: this.state.image}} style={{width: 90, height: 160}} />
-                        <Input
-                            containerStyle={styles.component} 
-                            placeholder='License Plate'
-                            rightIcon=  {{ 
-                                            type: 'font-awesome', 
-                                            name: 'search',
-                                            onPress: () => this.getVinFromLicensePlate(this.state.licensePlateText)
-                                        }}
-                            onChangeText={(text) => this.setState({licensePlateText: text})}
-                            onSubmitEditing={() => this.getVinFromLicensePlate(this.state.licensePlateText)}
-                        />
-                        <Button 
-                            style={styles.component} 
-                            title='Use Camera to Capture License Plate' 
-                            onPress={() => this.setState({camera: true})} 
-                        />
-                    </View>
-            */
-
 
         return(
             <View style={{flex: 1, backgroundColor: 'white'}}>
