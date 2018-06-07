@@ -41,7 +41,7 @@ export default class RatingDisplay extends React.Component {
             for(i = 0; i < this.props.vhrReport.AccidentEvents.length; i++){
                 now = moment()
                 then = moment(this.props.vhrReport.AccidentEvents[i].Date.split('T')[0])
-                if( then.diff(now, 'years', true) <= 1 ){
+                if( now.diff(then, 'years', true) <= 1 ){
                     numberOfAccidents++
                 }
             }
@@ -70,7 +70,7 @@ export default class RatingDisplay extends React.Component {
             now = moment()
             for(i = 0; i < this.props.vhrReport.ServiceEvents.length; i++){
                 then = moment(this.props.vhrReport.ServiceEvents[i].Date.split('T')[0])
-                if( then.diff(now, 'years', true) <= 1 ){
+                if( now.diff(then, 'years', true) <= 1 ){
                     numberOfService++
                 }
             }
