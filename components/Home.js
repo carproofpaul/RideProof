@@ -49,15 +49,6 @@ export default class App extends React.Component {
     }
 
     getCamera(){
-        /*
-        return (
-            <CameraScreen onBack={() => this.setState({camera: false})} onImage={(image) => {
-                this.uploadImage(image)
-                this.setState({image: image, camera: false})
-            }} />
-        )
-        */
-    
         if(this.state.permissionsGranted == true) cameraScreenContent = this.renderCamera()
         else if(this.state.permissionsGranted == false) cameraScreenContent = this.renderNoPermissions()
         else cameraScreenContent = <Text>Loading</Text>    

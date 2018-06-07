@@ -2,9 +2,11 @@ import React from 'react';
 import {View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TermsServices from './TermsServices';
+
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 import RecallEvents from './VehicleHistoryReport/RecallEvents';
 import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
+import StolenEvents from './VehicleHistoryReport/StolenEvents';
 
 import AccidentDisplay from './Display/AccidentDisplay';
 import StolenDisplay from './Display/StolenDisplay';
@@ -31,7 +33,11 @@ export default class Display extends React.Component {
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
                     <AccidentDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
-                <StolenDisplay vhrReport={this.props.vhrReport}/>
+
+                <TouchableOpacity onPress={() => this.setState({component: <StolenEvents data={this.props.vhrReport.StolenEvents}/>})}>
+                    <StolenDisplay vhrReport={this.props.vhrReport}/>
+                </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
                     <RecallDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
