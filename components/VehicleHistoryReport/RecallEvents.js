@@ -31,12 +31,13 @@ export default class RecallEvents extends React.Component {
             )
         }
 
+
         return (
         <ScrollView style={{margin: 10}}>
             <Text style={{fontWeight: 'bold', fontSize: 25}}>Recall Events</Text>
             <Divider style={{marginVertical: 10}}/>
             {
-                this.props.data.reverse().map((value, i) => (
+                this.props.data.slice(0).reverse().map((value, i) => (
                 <ListItem
                     key={i}
                     title={'Campaign Number: ' + value.CampaignNumber}

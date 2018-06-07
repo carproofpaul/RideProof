@@ -14,7 +14,7 @@ export default class App extends React.Component {
     state = {
         isReady: false,
 
-        licensePlateText: "bszl403",
+        licensePlateText: "BMPV554",
         prompt: false,
         image: null,
         loading: false,
