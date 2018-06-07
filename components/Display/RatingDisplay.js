@@ -61,7 +61,7 @@ export default class RatingDisplay extends React.Component {
             }
             if(numberOfRecalls == 0) scale = scale + 3
             else if(numberOfRecalls == 1) scale = scale + 2
-            else if(numberOfRecalls > 1) scale = scale + 3
+            else if(numberOfRecalls > 1) scale = scale + 0 // no points
         } else {scale = scale + 3}
 
         //Service 0-3
