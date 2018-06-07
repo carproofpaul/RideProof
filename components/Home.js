@@ -25,14 +25,25 @@ export default class App extends React.Component {
     }
 
     
-    async _getClipBoard() {
+    async _CheckClipBoard() {
         var content = await Clipboard.getString();
-        console.log(content);
+
+        if(content.length > 2 && content.length < 9 && /^[a-z0-9]+$/.test(content)){
+            Alert.alert(
+                'License Plate Detected',
+                'We have detected a possible license plate number in your clipboard. Do you want to use it?',
+                [
+                    {text: 'No', onPress: () => null},
+                    {text: 'Yes', onPress: () => this.getVinFromLicensePlate(content)},
+                ],
+                { cancelable: true }
+            )
+        }
         
     }
 
     async componentWillMount() {
-        this._getClipBoard()
+        this._CheckClipBoard()
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({ permissionsGranted: status === 'granted', isReady: true });
     }
@@ -310,6 +321,7 @@ export default class App extends React.Component {
 
                 <Prompt
                     title="License Plate"
+                    defaultValue={this.state.licensePlateText}
                     visible={this.state.prompt}
                     placeholder="License Plate"
                     onChangeText={(text) => {
