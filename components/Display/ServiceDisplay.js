@@ -20,12 +20,12 @@ export default class ServiceDisplay extends React.Component {
 
                 iconColour = numberOfService == 0 ? 'red' : numberOfService >= 1 && numberOfService <= 2 ? 'orange' : 'green'
                 iconName = numberOfService < 3 ? 'warning' : 'check'
-                text = numberOfService == 0 ? 'Vehicle not serviced in the past year' : 'Vehicle serviced ' + numberOfService + ' time(s) in the past year'
+                text = numberOfService == 0 ? 'Vehicle not Serviced in the Past Year' : 'Vehicle Serviced ' + numberOfService + ' Time(s) in the Past Year'
             } 
             else {
                 iconColour = 'red'
                 iconName = 'warning'
-                text = 'Vehicle has no service records'
+                text = 'Vehicle has no Service Records'
             }
 
 

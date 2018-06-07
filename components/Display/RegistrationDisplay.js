@@ -18,17 +18,26 @@ export default class RegistrationDisplay extends React.Component {
     }
     
     render() {
-        iconColour = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'red' : this.useType=="Commercial_Use" ? 'green' : 'orange' 
-        iconName = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'warning' : 'check' 
-        text = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  
-        ? 'Vehicle never registered' : this.useType=="Commercial_Use" 
-        ? 'Vehicle registered for commerical use' : 'Vehicle registered for non-commerical use' 
+        iconColour = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration() !== true  
+            ? 'red' 
+            : this.useType == "Commercial_Use" 
+                ? 'green' 
+                : 'orange' 
+
+        iconName = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration() !== true  
+            ? 'warning' 
+            : 'check' 
+
+        text = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration() !== true  
+            ? 'Vehicle Never Registered' 
+            : this.useType == "Commercial_Use" 
+                ? 'Vehicle Registered for\nCommerical Use' 
+                : 'Vehicle Registered for\nNon-Commerical Use' 
 
         return (
             <View style={styles.rows} >
                 <Icon raised name={iconName} color={iconColour} size={40} />
                 <Text style={styles.text}>{text}</Text>
-
             </View>
         )
     }
