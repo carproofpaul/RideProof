@@ -11,8 +11,7 @@ import moment from 'moment';
 export default class AccidentDisplay extends React.Component {
     
     render() {
-
-        iconColour = this.props.vhrReport.AccidentEvents === null ? '#3890EA' : '#E2001D'
+        iconColour = this.props.vhrReport.AccidentEvents === null ? 'green' : 'red'
         iconName = this.props.vhrReport.AccidentEvents === null ? 'check' : 'warning'
         text = this.props.vhrReport.AccidentEvents === null 
             ? 'No Accidents Reported' 
