@@ -12,25 +12,26 @@ export default class ServiceDisplay extends React.Component {
     
     render() {
 
-        var currentDate = new moment();
-        try {
-            var serv = moment(this.props.vhrReport.ServiceEvents[this.props.vhrReport.ServiceEvents.length-1].Date.split('T')[0])
-            lastServ = serv.toString();
-            if(currentDate.diff(serv, 'years', true) <=1) {
-                var inRange=true;
-            }
+            if(this.props.vhrReport.ServiceEvents !== null){
+                numberOfService = 0
+                now = moment()
+                for(i = 0; i < this.props.vhrReport.ServiceEvents.length; i++){
+                    then = moment(this.props.vhrReport.ServiceEvents[i].Date.split('T')[0])
+                    if( now.diff(then, 'years', true) <= 1 ){
+                        numberOfService++
+                    }
+                }
+
+                iconColour = numberOfService == 0 ? 'red' : numberOfService >= 1 && numberOfService <= 2 ? 'orange' : 'green'
+                iconName = numberOfService < 3 ? 'warning' : 'check'
+                text = numberOfService == 0 ? 'Vehicle not serviced in the past year' : 'Vehicle serviced ' + numberOfService + ' time(s) in the past year'
+            } 
             else {
-                var inRange=false;
+                iconColour = 'red'
+                iconName = 'warning'
+                text = 'Vehicle has no service records'
             }
 
-        } catch(error){}
-
-        iconColour = this.props.vhrReport.ServiceEvents === null ? '#E2001D' : inRange ? '#3890EA' : '#E2001D'
-        // iconName = inRange==true ? 'wrench' : 'warning'
-        iconName = this.props.vhrReport.ServiceEvents === null ? 'warning' : inRange? 'wrench' : 'warning'
-        text = this.props.vhrReport.ServiceEvents === null ? 'No service records found' : inRange
-            ? 'Last service reported ' + lastServ.split(' ').slice(1,4).join(' ')
-            : 'Vehicle has no reported service \nin the last year'
 
         return (
             <View style={styles.rows}>

@@ -12,7 +12,7 @@ export default class RecallDisplay extends React.Component {
     
     render() {
 
-        iconColour = this.props.vhrReport.RecallEvents === null ? '#3890EA' : '#E2001D'
+        iconColour = this.props.vhrReport.RecallEvents === null ? 'green' : 'red'
         iconName = this.props.vhrReport.RecallEvents === null ? 'check' : 'warning'
         text = this.props.vhrReport.RecallEvents === null ? 'No Recalls Found' : 'Recall(s) Reported'
 

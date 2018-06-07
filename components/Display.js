@@ -41,11 +41,6 @@ export default class Display extends React.Component {
                     <ServiceDisplay vhrReport={this.props.vhrReport}/>
                 </TouchableOpacity>
                 <RegistrationDisplay vhrReport={this.props.vhrReport}/>
-
-                <TouchableOpacity onPress={() => this.setState({component: <TermsServices/>})}>
-                    <Text>Information on Reports</Text>
-                </TouchableOpacity>
-                
             </ScrollView>
         )
     }
@@ -55,23 +50,33 @@ export default class Display extends React.Component {
             <Modal
                 animationType="slide"
                 visible={true}
+                backgroundColor='white'
                 onRequestClose={() => {
                     this.state.component ?
                     this.setState({component: null}) :
                     this.props.onClose()
                 }}
             >
-                    <View style={{marginTop: 22, marginLeft:10}}>
-                        <Icon
-                            name={(this.state.component) ? 'chevron-left' : 'chevron-down'}
-                            size={20}
-                            style={{margin: 10}}
-                            onPress={() => {
-                                this.state.component ?
-                                this.setState({component: null}) :
-                                this.props.onClose()
-                            }}
-                        />
+                    <View style={{marginTop: 22, marginHorizontal: 10}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Icon
+                                name={(this.state.component) ? 'chevron-left' : 'chevron-down'}
+                                size={30}
+                                style={{marginLeft: 10}}
+                                onPress={() => {
+                                    this.state.component ?
+                                    this.setState({component: null}) :
+                                    this.props.onClose()
+                                }}
+                            />
+                            <Icon
+                                name='info'
+                                size={30}
+                                color={(this.state.component) ? 'white' : 'black'}
+                                style={{marginRight: 20}}
+                                onPress={() => this.setState({component: <TermsServices/>})}
+                            />
+                        </View>
                         {
                             this.state.component ?
                             this.state.component :
