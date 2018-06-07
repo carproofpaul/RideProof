@@ -80,10 +80,10 @@ export default class RatingDisplay extends React.Component {
         } else {scale = scale + 2}
 
         circleColor = ''
-        if(scale < 5){
+        if(scale < 6){
             circleColor = 'red'
-        } else if(scale < 7){
-            circleColor = 'blue'
+        } else if(scale <= 8){
+            circleColor = 'orange'
         } else {
             circleColor = 'green'
         }
