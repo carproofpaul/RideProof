@@ -11,7 +11,12 @@ export default class RatingDisplay extends React.Component {
 
         scale = 0
 
-        //Registration 1 for registered, 3 for not
+        /**
+         * REGISTRATION
+         * 0.5 points for being registered
+         * + 0.5 point for being commercial use
+         * - 5 for not being resgistered
+         */
         if(this.props.vhrReport.TitleOrRegistrationEvents !== null){
             isRegistered = false
             isCommercial = false
@@ -27,10 +32,15 @@ export default class RatingDisplay extends React.Component {
 
             if(isCommercial == true) {scale = scale + 0.5}
             if(isRegistered == true) {scale = scale + 0.5}
-            else {scale = scale - 3}
+            else {scale = scale - 5}
         }
 
-        //ACCIDENT 0 - 3
+        /**
+         * ACCIDENTS
+         * 3 points for 0 accidents within 1 year
+         * 1.5 points for 1 accidnet witnin 1 year
+         * 0 points for more than 1 accident witin 1 year
+         */
         if(this.props.vhrReport.AccidentEvents !== null){
             numberOfAccidents = 0
             for(i = 0; i < this.props.vhrReport.AccidentEvents.length; i++){
@@ -46,7 +56,12 @@ export default class RatingDisplay extends React.Component {
             //numberOfAccidents > 1, bad 
         } else {scale = scale + 3}
 
-        //Recalls 0 - 3
+        /**
+         * RECALLS
+         * 3 points for 0 outstanding or unkown (status) recalls
+         * 2 points for 2 outstanding or unkown (status) recalls
+         * 0 points for more than 2 outstanding or unkown (status) recalls
+         */
         if(this.props.vhrReport.RecallEvents !== null){
             numberOfRecalls = 0
             for(i = 0; i < this.props.vhrReport.RecallEvents.length; i++){
@@ -59,7 +74,13 @@ export default class RatingDisplay extends React.Component {
             else if(numberOfRecalls > 1) scale = scale + 0 // no points
         } else {scale = scale + 3}
 
-        //Service 0-3
+        /**
+         * SERVICE
+         * 3 points for 3 or more service events in the pass year
+         * 2 points for 2 service events in the pass year
+         * 1 points for 1 service events in the pass year
+         * 2 points if service records is null / not reported
+         */
         if(this.props.vhrReport.ServiceEvents !== null){
             numberOfService = 0
             now = moment()
