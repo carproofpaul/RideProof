@@ -1,10 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, TouchableOpacity, ScrollView } from 'react-native';
-import CameraScreen from './CameraScreen';
+import {View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../resources/Token';
-import Loader from './Loader';
 import TermsServices from './TermsServices';
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 import RecallEvents from './VehicleHistoryReport/RecallEvents';

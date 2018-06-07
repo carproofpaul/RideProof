@@ -1,10 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, ScrollView } from 'react-native';
-import CameraScreen from './CameraScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../resources/Token';
-import Loader from './Loader';
+import { Text, View, ScrollView } from 'react-native';
 
 export default class App extends React.Component {
 

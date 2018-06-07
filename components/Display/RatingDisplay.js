@@ -1,12 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, Alert, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../../resources/Token';
-import Loader from '../Loader';
-import { ListItem, Divider } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
-import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
+import { AnimatedGaugeProgress } from 'react-native-simple-gauge';
 
 
 
@@ -61,7 +56,7 @@ export default class RatingDisplay extends React.Component {
             }
             if(numberOfRecalls == 0) scale = scale + 3
             else if(numberOfRecalls == 1) scale = scale + 2
-            else if(numberOfRecalls > 1) scale = scale + 3
+            else if(numberOfRecalls > 1) scale = scale + 0 // no points
         } else {scale = scale + 3}
 
         //Service 0-3
@@ -80,10 +75,10 @@ export default class RatingDisplay extends React.Component {
         } else {scale = scale + 2}
 
         circleColor = ''
-        if(scale < 5){
+        if(scale < 6){
             circleColor = 'red'
-        } else if(scale < 7){
-            circleColor = 'blue'
+        } else if(scale <= 8){
+            circleColor = 'orange'
         } else {
             circleColor = 'green'
         }
