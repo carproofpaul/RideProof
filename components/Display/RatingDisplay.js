@@ -34,6 +34,7 @@ export default class RatingDisplay extends React.Component {
             if(isRegistered == true) {scale = scale + 0.5}
             else {scale = scale - 5}
         }
+        console.log(scale);
 
         /**
          * ACCIDENTS
@@ -55,6 +56,7 @@ export default class RatingDisplay extends React.Component {
             else if(numberOfAccidents == 1) scale = scale + 1.5
             //numberOfAccidents > 1, bad 
         } else {scale = scale + 3}
+        console.log(scale);
 
         /**
          * RECALLS
@@ -73,6 +75,7 @@ export default class RatingDisplay extends React.Component {
             else if(numberOfRecalls == 1) scale = scale + 2
             else if(numberOfRecalls > 1) scale = scale + 0 // no points
         } else {scale = scale + 3}
+        console.log(scale);
 
         /**
          * SERVICE
@@ -94,6 +97,7 @@ export default class RatingDisplay extends React.Component {
             else if(numberOfService == 2) scale = scale + 2
             else if(numberOfService == 1) scale++
         } else {scale = scale + 2}
+        console.log(scale);
 
         circleColor = ''
         if(scale < 6){
