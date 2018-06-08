@@ -2,22 +2,19 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-export default class RecallDisplay extends React.Component {
+const RecallDisplay = ({recall}) => {
     
-    render() {
+    iconColour = recall === null ? 'green' : 'red'
+    iconName = recall === null ? 'check' : 'warning'
+    text = recall === null ? 'No Recalls Found' : 'Recall(s) Reported'
 
-        iconColour = this.props.vhrReport.RecallEvents === null ? 'green' : 'red'
-        iconName = this.props.vhrReport.RecallEvents === null ? 'check' : 'warning'
-        text = this.props.vhrReport.RecallEvents === null ? 'No Recalls Found' : 'Recall(s) Reported'
+    return (
+        <View style={styles.rows} >
+            <Icon raised name={iconName} color={iconColour} size={40} />
+            <Text style={styles.text}>{text}</Text>
+        </View>
+    )
 
-        return (
-            <View style={styles.rows} >
-                <Icon raised name={iconName} color={iconColour} size={40} />
-                <Text style={styles.text}>{text}</Text>
-            </View>
-        )
-    }
 }
 
 const styles = StyleSheet.create({
@@ -32,4 +29,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
 });
+
+export default RecallDisplay;
 
