@@ -15,7 +15,7 @@ export default class RatingDisplay extends React.Component {
          * REGISTRATION
          * 0.5 points for being registered
          * + 0.5 point for being commercial use
-         * - 5 for not being registered
+         * - 4 for not being registered
          */
         if(this.props.vhrReport.TitleOrRegistrationEvents !== null){
             isRegistered = false
@@ -32,13 +32,13 @@ export default class RatingDisplay extends React.Component {
 
             if(isCommercial == true) {scale = scale + 0.5}
             if(isRegistered == true) {scale = scale + 0.5}
-            else {scale = scale - 5}
+            else {scale = scale - 4}
         }
         console.log(scale);
 
         /**
          * ACCIDENTS
-         * 3 points for 0 accidents within 1 year
+         * 4 points for 0 accidents within 1 year
          * 1.5 points for 1 accidnet witnin 1 year
          * 0 points for more than 1 accident witin 1 year
          */
@@ -55,14 +55,13 @@ export default class RatingDisplay extends React.Component {
             if(numberOfAccidents == 0) scale = scale + 3
             else if(numberOfAccidents == 1) scale = scale + 1.5
             //numberOfAccidents > 1, bad 
-        } else {scale = scale + 3}
+        } else {scale = scale + 4}
         console.log(scale);
 
         /**
          * RECALLS
-         * 3 points for 0 outstanding or unkown (status) recalls
-         * 2 points for 2 outstanding or unkown (status) recalls
-         * 0 points for more than 2 outstanding or unkown (status) recalls
+         * 1 points for 0 outstanding or unkown (status) recalls
+         * null == no recalls
          */
         if(this.props.vhrReport.RecallEvents !== null){
             numberOfRecalls = 0
@@ -71,18 +70,17 @@ export default class RatingDisplay extends React.Component {
                     numberOfRecalls++
                 }
             }
-            if(numberOfRecalls == 0) scale = scale + 3
-            else if(numberOfRecalls == 1) scale = scale + 2
-            else if(numberOfRecalls > 1) scale = scale + 0 // no points
-        } else {scale = scale + 3}
+            if(numberOfRecalls == 0) scale = scale + 1
+            //more than one gets no points
+        } else {scale = scale + 1}
         console.log(scale);
 
         /**
          * SERVICE
-         * 3 points for 3 or more service events in the pass year
-         * 2 points for 2 service events in the pass year
-         * 1 points for 1 service events in the pass year
-         * 2 points if service records is null / not reported
+         * 4 points for 3 or more service events in the pass year
+         * 3 points for 2 service events in the pass year
+         * 2 points for 1 service events in the pass year
+         * 3 points if service records is null / not reported
          */
         if(this.props.vhrReport.ServiceEvents !== null){
             numberOfService = 0
@@ -93,10 +91,10 @@ export default class RatingDisplay extends React.Component {
                     numberOfService++
                 }
             }
-            if(numberOfService >= 3) scale = scale + 3
-            else if(numberOfService == 2) scale = scale + 2
-            else if(numberOfService == 1) scale++
-        } else {scale = scale + 2}
+            if(numberOfService >= 3) scale = scale + 4
+            else if(numberOfService == 2) scale = scale + 3
+            else if(numberOfService == 1) scale = scale + 2
+        } else {scale = scale + 3}
         console.log(scale);
 
         circleColor = ''
