@@ -15,7 +15,7 @@ export default class RatingDisplay extends React.Component {
          * REGISTRATION
          * 0.5 points for being registered
          * + 0.5 point for being commercial use
-         * - 5 for not being resgistered
+         * - 5 for not being registered
          */
         if(this.props.vhrReport.TitleOrRegistrationEvents !== null){
             isRegistered = false

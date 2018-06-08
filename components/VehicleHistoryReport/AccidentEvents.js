@@ -47,7 +47,9 @@ export default class AccidentEvents extends React.Component {
                             else return 'No Location'
                         })()}
                         chevron
-                        onPress={() => this.displayDetail(value.Detail)}
+                        onPress={() => this.displayDetail(  value.Detail + '\n\n' + 
+                                                            (value.AirBagDeployed ? 'Air bags did deploy' : 'Air bags did not deploy')
+                                                        )}
                     />
                     ))
                 }

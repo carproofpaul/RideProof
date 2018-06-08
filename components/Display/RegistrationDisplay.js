@@ -28,11 +28,13 @@ export default class RegistrationDisplay extends React.Component {
             ? 'warning' 
             : 'check' 
 
-        text = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration() !== true  
+        text = this.props.vhrReport.TitleOrRegistrationEvents === null 
             ? 'Vehicle Never Registered' 
-            : this.useType == "Commercial_Use" 
-                ? 'Vehicle Registered for\nCommerical Use' 
-                : 'Vehicle Registered for\nNon-Commerical Use' 
+            : !this.getRegistration()
+                ? 'Vehicle has not been Registered for\nthe past 2 years'
+                : this.useType == "Commercial_Use" 
+                    ? 'Vehicle Registered for\nCommerical Use' 
+                    : 'Vehicle Registered for\nNon-Commerical Use' 
 
         return (
             <View style={styles.rows} >
