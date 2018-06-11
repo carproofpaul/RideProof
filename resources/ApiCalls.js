@@ -32,10 +32,16 @@ export const getVinFromLicensePlateNumber = (token, number, province, onSuccess,
 
     xmlhttp.onreadystatechange = (function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            console.log(xmlhttp.responseText)
             var json = JSON.parse(xmlhttp.responseText)
 
-            if(json.QuickVINPlus.VINInfo.VIN[0] === null || json.QuickVINPlus.VINInfo.VIN[0] === undefined){
-                onFailure("Invalid License Plate")
+            if(json.ErrorMessages.Errors.length > 0 && json.ErrorMessages.Errors !== null){
+                onFailure(json.ErrorMessages.Errors[0].Message.toString() + " ("  + json.ErrorMessages.Errors[0].Code.toString() + ")")
+                return
+            }
+
+            if(json.QuickVINPlus === null){
+                onFailure("Invalid Search")
             } else {
                 onSuccess(json.QuickVINPlus.VINInfo.VIN[0], json)
             }
@@ -74,6 +80,7 @@ export const getVehicleHistoryReportFromVin = (token, vin, onSuccess, onFailure)
 
     xmlhttp.onreadystatechange = (function () {
       if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        console.log(xmlhttp.responseText)
         var json = JSON.parse(xmlhttp.responseText)
         onSuccess(json)
       } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
@@ -109,11 +116,48 @@ export const getRecallsFromVin = (token, vin, onSuccess, onFailure) => {
 
     xmlhttp.onreadystatechange = (function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            console.log(xmlhttp.responseText)
             json = JSON.parse(xmlhttp.responseText)
             onSuccess(json)
         } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
             onFailure(xmlhttp)
         }
     }).bind(this)
+
+}
+
+
+export const getValuationFromVin = (token, vin, onSuccess, onFailure) => {
+
+    if(vin === '' || vin === null){
+        onFailure('ERROR: VIN is invalid')
+        return
+    }
+
+    if(token === '' || token === null){
+        onFailure('ERROR: Authentication token is invalid')
+        return
+    }
+
+    var xmlhttp = new XMLHttpRequest();    
+    xmlhttp.open("GET", "http://apivaluationwebservice.carproof.com/ValuationRange/GetRetailValuationRange?vin="+vin, true);
+    xmlhttp.setRequestHeader("webServiceToken", token);
+    xmlhttp.send();
+
+    xmlhttp.onreadystatechange = (function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            console.log(xmlhttp.responseText)
+            json = JSON.parse(xmlhttp.responseText)
+          
+            if(json.MinValuation === null || json.MaxValuation === null){
+                onFailure("No Valuation was found")
+            } else {
+                onSuccess(json.MinValuation, json.MaxValuation)
+            }
+  
+        } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+            onFailure(xmlhttp)
+        }
+      }).bind(this)
 
 }
