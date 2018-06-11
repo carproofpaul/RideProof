@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Modal, KeyboardAvoidingView   } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Clipboard   } from 'react-native';
 import CameraScreen from './CameraScreen';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Icon } from 'react-native-elements';
@@ -7,7 +7,9 @@ import { Token } from '../resources/Token';
 import Loader from './Loader';
 import Display from './Display';
 import Prompt from 'rn-prompt';
-import { Camera, Permissions, AppLoading  } from 'expo';
+import { Camera, Permissions  } from 'expo';
+
+import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from '../resources/ApiCalls';
 
 export default class App extends React.Component {
 
@@ -24,21 +26,31 @@ export default class App extends React.Component {
         flash: false,
     }
 
+    
+    async _CheckClipBoard() {
+        var content = await Clipboard.getString();
+
+        if(content.length > 2 && content.length < 9 && /^[a-z0-9]+$/.test(content)){
+            Alert.alert(
+                'License Plate Detected',
+                'We have detected a possible license plate number in your clipboard. Do you want to use it?',
+                [
+                    {text: 'No', onPress: () => null},
+                    {text: 'Yes', onPress: () => this.getVinFromLicensePlate(content)},
+                ],
+                { cancelable: true }
+            )
+        }
+        
+    }
+
     async componentWillMount() {
+        this._CheckClipBoard()
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({ permissionsGranted: status === 'granted', isReady: true });
     }
 
     getCamera(){
-        /*
-        return (
-            <CameraScreen onBack={() => this.setState({camera: false})} onImage={(image) => {
-                this.uploadImage(image)
-                this.setState({image: image, camera: false})
-            }} />
-        )
-        */
-    
         if(this.state.permissionsGranted == true) cameraScreenContent = this.renderCamera()
         else if(this.state.permissionsGranted == false) cameraScreenContent = this.renderNoPermissions()
         else cameraScreenContent = <Text>Loading</Text>    
@@ -79,11 +91,12 @@ export default class App extends React.Component {
       }
 
     error(message){
+        this.setState({loading: false})
         Alert.alert(
             'Error',
             message,
             [
-                {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
+                {text: 'Ok', onPress: () => this.setState({image: null})},
             ],
             { cancelable: false }
           )
@@ -94,29 +107,10 @@ export default class App extends React.Component {
      * @param {vin of car} vin 
      */
     getRecalls(vin){
-        var xmlhttp = new XMLHttpRequest();
-    
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            this.recalls = JSON.parse(xmlhttp.responseText)
-
-            console.log("RECALLS: \n" + JSON.stringify(this.recalls))
-
-            this.setState({loading: false, modalVisible: true}) //STOP LOADER, LAST ONE
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Recall/Get?vin="+vin, true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        getRecallsFromVin(Token._webServiceToken, vin, (recalls) => {
+            this.recalls = recalls
+            this.setState({loading: false, modalVisible: true})
+        }, (err) => this.error(err));
     }
 
     /**
@@ -124,30 +118,10 @@ export default class App extends React.Component {
      * @param {vin of car} vin 
      */
     getVehicleHistoryReport(vin){
-        var xmlhttp = new XMLHttpRequest();
-        var result;
-    
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            this.vhr = JSON.parse(xmlhttp.responseText)
-
-            console.log("VHR: \n" + JSON.stringify(this.vhr))
-
+        getVehicleHistoryReportFromVin(Token._webServiceToken, vin, (vhr) => {
+            this.vhr = vhr
             this.getRecalls(vin)
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Vhr/Get?vin="+vin, true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        }, (err) => this.error(err))
     }
 
     /**
@@ -155,45 +129,13 @@ export default class App extends React.Component {
      * @param {license plate number} licensePlate 
      */
     getVinFromLicensePlate(licensePlate){
-        if(licensePlate === ''){
-            this.setState({image: null})
-            return
-        }
-
         this.setState({loading: true})
 
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            json = JSON.parse(xmlhttp.responseText)
-    
-            //NO VIN
-            if(json.QuickVINPlus.VINInfo.VIN.length == 0){
-                this.error('No VIN was found.')
-                this.setState({loading: false})
-                return
-            } 
-
-            vin = json.QuickVINPlus.VINInfo.VIN[0] //VIN
-            console.log("VIN: " + vin)
-
-            //GETTING OTHER DATA
-            this.getVehicleHistoryReport(vin)
-            
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "http://carfaxapi.carproof.com/api/QuickVIN?licensePlate="+licensePlate+"&province=on", true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        getVinFromLicensePlateNumber(Token._webServiceToken, 
+                                    licensePlate, 
+                                    'on', 
+                                    (vin) => this.getVehicleHistoryReport(vin), 
+                                    (err) => this.error(err));
     }
 
     /**
@@ -302,6 +244,7 @@ export default class App extends React.Component {
 
                 <Prompt
                     title="License Plate"
+                    defaultValue={this.state.licensePlateText}
                     visible={this.state.prompt}
                     placeholder="License Plate"
                     onChangeText={(text) => {

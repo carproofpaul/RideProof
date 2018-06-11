@@ -3,19 +3,44 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
+const RegistrationDisplay = ({registration}) => {
+    
+    iconColour = registration === null || getRegistration() !== true  
+        ? 'red' 
+        : this.useType == "Commercial_Use" 
+            ? 'green' 
+            : 'orange' 
 
-export default class RegistrationDisplay extends React.Component {
+    iconName = registration === null || getRegistration() !== true  
+        ? 'warning' 
+        : 'check' 
 
-    getRegistration() {
+    text = registration === null 
+        ? 'Vehicle Never Registered' 
+        : !getRegistration()
+            ? 'Vehicle has not been Registered for\nthe past 2 years'
+            : this.useType == "Commercial_Use" 
+                ? 'Vehicle Registered for\nCommerical Use' 
+                : 'Vehicle Registered for\nNon-Commerical Use' 
+
+    return (
+        <View style={styles.rows} >
+            <Icon raised name={iconName} color={iconColour} size={40} />
+            <Text style={styles.text}>{text}</Text>
+        </View>
+    )
+
+    function getRegistration() {
         currentDate = new moment()
         this.useType
-        for (var i=0; i<this.props.vhrReport.TitleOrRegistrationEvents.length; i++) {
-            if(currentDate.diff(this.props.vhrReport.TitleOrRegistrationEvents[i].Date, 'years', true) <=2) {
-                this.useType = this.props.vhrReport.TitleOrRegistrationEvents[i].UseType
+        for (var i=0; i< registration.length; i++) {
+            if(currentDate.diff(registration[i].Date, 'years', true) <=2) {
+                this.useType = registration[i].UseType
                 return true
             }
         }
     }
+<<<<<<< HEAD
     
     render() {
         iconColour = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'red' : this.useType=="Commercial_Use" ? 'green' : 'orange' 
@@ -32,6 +57,8 @@ export default class RegistrationDisplay extends React.Component {
             </View>
         )
     }
+=======
+>>>>>>> a12302aab046ed5bc2302b21bf2986a98e1076fb
 }
 
 const styles = StyleSheet.create({
@@ -46,3 +73,5 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 });
+
+export default RegistrationDisplay;

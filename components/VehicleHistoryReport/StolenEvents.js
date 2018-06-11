@@ -1,14 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, Alert, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../../resources/Token';
-import Loader from '../Loader';
+import { StyleSheet, Text, View, Alert, ScrollView } from 'react-native';
 import { ListItem, Divider } from 'react-native-elements';
 import moment from 'moment';
 
 
-export default class AccidentEvents extends React.Component {
+export default class StolenEvents extends React.Component {
 
     displayDetail(message){
         Alert.alert(
@@ -26,30 +22,27 @@ export default class AccidentEvents extends React.Component {
         if(this.props.data == null){
             return(
                 <View>
-                    <Text style={{fontStyle: 'italic', margin: 10, textAlign: 'center'}}>No Accident Events Available</Text>
+                    <Text style={{fontStyle: 'italic', margin: 10, textAlign: 'center'}}>No Stolen Records Available</Text>
                 </View>
             )
         }
 
         return (
             <ScrollView style={{margin: 10}}>
-                <Text style={{fontWeight: 'bold', fontSize: 25}}>Accident Events</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 25}}>Stolen Events</Text>
                 <Divider style={{marginVertical: 10}}/>
                 {
                     this.props.data.slice(0).reverse().map((value, i) => (
                     <ListItem
                         key={i}
-                        title={'Point of Impact: ' + value.PointOfImpact}
-                        subtitle={value.Date.split('T')[0]}
+                        title={value.Date.split('T')[0]}
                         rightTitle={(() => {
-                            if(value.Location.City !== null) return value.Location.City;
-                            if(value.Location.StateProv !== null) return value.Location.StateProv + ', ' + value.Location.Country;
+                            if(value.Location.City !== null) return value.Location.City + ', ' + value.Location.StateProv;
+                            if(value.Location.StateProv !== null) return value.Location.StateProv;
                             else return 'No Location'
                         })()}
                         chevron
-                        onPress={() => this.displayDetail(  value.Detail + '\n\n' + 
-                                                            (value.AirBagDeployed ? 'Air bags did deploy' : 'Air bags did not deploy')
-                                                        )}
+                        onPress={() => this.displayDetail(value.Detail)}
                     />
                     ))
                 }

@@ -1,18 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Modal, Alert, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Token } from '../../resources/Token';
-import Loader from '../Loader';
+import { StyleSheet, Text, View, Alert, ScrollView } from 'react-native';
 import { ListItem, Divider } from 'react-native-elements';
-import moment from 'moment';
 
 
 export default class RecallEvents extends React.Component {
 
     displayDetail(message){
         Alert.alert(
-            'Detail',
+            'More Information',
             message,
             [
                 {text: 'Ok', onPress: null},
@@ -48,7 +43,11 @@ export default class RecallEvents extends React.Component {
                         else return 'No Location'
                     })()}
                     chevron
-                    onPress={() => this.displayDetail(value.Detail)}
+                    onPress={() => this.displayDetail(  'Description: ' + (value.Description || 'not available') + '\n\n' +
+                                                        'Detail: ' + (value.Detail || 'not available') + '\n\n' +
+                                                        'Safety Risk: ' + (value.SafetyRisk || 'not available')  + '\n\n' +
+                                                        'Status: ' + (value.Status || 'not available')
+                                                    )}
                 />
                 ))
             }

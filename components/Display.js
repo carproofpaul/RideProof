@@ -2,9 +2,11 @@ import React from 'react';
 import {View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TermsServices from './TermsServices';
+
 import AccidentEvents from './VehicleHistoryReport/AccidentEvents';
 import RecallEvents from './VehicleHistoryReport/RecallEvents';
 import ServiceEvents from './VehicleHistoryReport/ServiceEvents';
+import StolenEvents from './VehicleHistoryReport/StolenEvents';
 
 import AccidentDisplay from './Display/AccidentDisplay';
 import StolenDisplay from './Display/StolenDisplay';
@@ -20,23 +22,33 @@ export default class Display extends React.Component {
         modalVisible: false,
     }
 
+
+
     getContent(){
 
         return(
             <ScrollView style={{margin: 10}}>
+
                 <RatingDisplay vhrReport={this.props.vhrReport} recalls={this.props.recalls}/>
 
                 <TouchableOpacity onPress={() => this.setState({component: <AccidentEvents data={this.props.vhrReport.AccidentEvents}/>})}>
-                    <AccidentDisplay vhrReport={this.props.vhrReport}/>
+                    <AccidentDisplay accidentEvents={this.props.vhrReport.AccidentEvents}/>
                 </TouchableOpacity>
-                <StolenDisplay vhrReport={this.props.vhrReport}/>
+
+                <TouchableOpacity onPress={() => this.setState({component: <StolenEvents data={this.props.vhrReport.StolenEvents}/>})}>
+                    <StolenDisplay stolenEvents={this.props.vhrReport.StolenEvents}/>
+                </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => this.setState({component: <RecallEvents data={this.props.vhrReport.RecallEvents}/>})}>
-                    <RecallDisplay vhrReport={this.props.vhrReport}/>
+                    <RecallDisplay recall={this.props.vhrReport.RecallEvents}/>
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => this.setState({component: <ServiceEvents data={this.props.vhrReport.ServiceEvents}/>})}>
-                    <ServiceDisplay vhrReport={this.props.vhrReport}/>
+                    <ServiceDisplay serviceEvents={this.props.vhrReport.ServiceEvents}/>
                 </TouchableOpacity>
-                <RegistrationDisplay vhrReport={this.props.vhrReport}/>
+
+                <RegistrationDisplay registration={this.props.vhrReport.TitleOrRegistrationEvents}/>
+
             </ScrollView>
         )
     }
@@ -74,8 +86,7 @@ export default class Display extends React.Component {
                             />
                         </View>
                         {
-                            this.state.component ?
-                            this.state.component :
+                            this.state.component ||
                             this.getContent()
                         }
                     </View>

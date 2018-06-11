@@ -2,22 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+const StolenDisplay = ({stolenEvents}) => {
 
-export default class StolenDisplay extends React.Component {
-    
-    render() {
+    iconColour = stolenEvents=== null ? 'green' : 'red'
+    iconName = stolenEvents === null ? 'check' : 'warning'
+    text = stolenEvents === null ? 'Not Reported Stolen' : 'Stolen Reports Found'
 
-        iconColour = this.props.vhrReport.StolenEvents === null ? 'green' : 'red'
-        iconName = this.props.vhrReport.StolenEvents === null ? 'check' : 'warning'
-        text = this.props.vhrReport.StolenEvents === null ? 'Not Reported Stolen' : 'Vehicle Reported Stolen'
-
-        return (
-            <View style={styles.rows}>
-                <Icon raised name={iconName} color={iconColour} size={40} />
-                <Text style={styles.text}>{text}</Text>
-            </View>
-        )
-    }
+    return (
+        <View style={styles.rows}>
+            <Icon raised name={iconName} color={iconColour} size={40} />
+            <Text style={styles.text}>{text}</Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -31,3 +27,5 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 });
+
+export default StolenDisplay;
