@@ -36,12 +36,7 @@ export default class AccidentEvents extends React.Component {
                 <Text style={{fontWeight: 'bold', fontSize: 25}}>Accident Events</Text>
                 <Divider style={{marginVertical: 10}}/>
                 {
-<<<<<<< HEAD
-                    
-                    this.props.data.reverse().map((value, i) => (
-=======
                     this.props.data.slice(0).reverse().map((value, i) => (
->>>>>>> 24a31a6933a0ec53d59978dd02c28d2319302540
                     <ListItem
                         key={i}
                         title={'Point of Impact: ' + value.PointOfImpact}
