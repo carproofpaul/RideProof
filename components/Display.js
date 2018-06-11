@@ -86,8 +86,7 @@ export default class Display extends React.Component {
                             />
                         </View>
                         {
-                            this.state.component ?
-                            this.state.component :
+                            this.state.component ||
                             this.getContent()
                         }
                     </View>

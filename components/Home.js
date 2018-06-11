@@ -9,6 +9,8 @@ import Display from './Display';
 import Prompt from 'rn-prompt';
 import { Camera, Permissions  } from 'expo';
 
+import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from '../ApiCalls';
+
 export default class App extends React.Component {
 
     state = {
@@ -89,11 +91,12 @@ export default class App extends React.Component {
       }
 
     error(message){
+        this.setState({loading: false})
         Alert.alert(
             'Error',
             message,
             [
-                {text: 'Ok', onPress: () => this.setState({loading: false, image: null})},
+                {text: 'Ok', onPress: () => this.setState({image: null})},
             ],
             { cancelable: false }
           )
@@ -104,29 +107,10 @@ export default class App extends React.Component {
      * @param {vin of car} vin 
      */
     getRecalls(vin){
-        var xmlhttp = new XMLHttpRequest();
-    
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            this.recalls = JSON.parse(xmlhttp.responseText)
-
-            console.log("RECALLS: \n" + JSON.stringify(this.recalls))
-
-            this.setState({loading: false, modalVisible: true}) //STOP LOADER, LAST ONE
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Recall/Get?vin="+vin, true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        getRecallsFromVin(Token._webServiceToken, vin, (recalls) => {
+            this.recalls = recalls
+            this.setState({loading: false, modalVisible: true})
+        }, (err) => this.error(err));
     }
 
     /**
@@ -134,30 +118,10 @@ export default class App extends React.Component {
      * @param {vin of car} vin 
      */
     getVehicleHistoryReport(vin){
-        var xmlhttp = new XMLHttpRequest();
-        var result;
-    
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            this.vhr = JSON.parse(xmlhttp.responseText)
-
-            console.log("VHR: \n" + JSON.stringify(this.vhr))
-
+        getVehicleHistoryReportFromVin(Token._webServiceToken, vin, (vhr) => {
+            this.vhr = vhr
             this.getRecalls(vin)
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "https://carfaxapi.carproof.com/Vhr/Get?vin="+vin, true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        }, (err) => this.error(err))
     }
 
     /**
@@ -165,45 +129,13 @@ export default class App extends React.Component {
      * @param {license plate number} licensePlate 
      */
     getVinFromLicensePlate(licensePlate){
-        if(licensePlate === ''){
-            this.setState({image: null})
-            return
-        }
-
         this.setState({loading: true})
 
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = (function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            //DATA
-            json = JSON.parse(xmlhttp.responseText)
-    
-            //NO VIN
-            if(json.QuickVINPlus.VINInfo.VIN.length == 0){
-                this.error('No VIN was found.')
-                this.setState({loading: false})
-                return
-            } 
-
-            vin = json.QuickVINPlus.VINInfo.VIN[0] //VIN
-            console.log("VIN: " + vin)
-
-            //GETTING OTHER DATA
-            this.getVehicleHistoryReport(vin)
-            
-    
-          } else if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-            //ERROR
-            console.log("ERROR: " + xmlhttp)
-            this.setState({loading: false})
-          }
-        }).bind(this)
-        
-        xmlhttp.open("GET", "http://carfaxapi.carproof.com/api/QuickVIN?licensePlate="+licensePlate+"&province=on", true);
-        xmlhttp.setRequestHeader("User-Agent", "request");
-        xmlhttp.setRequestHeader("webServiceToken", Token._webServiceToken);
-    
-        xmlhttp.send();
+        getVinFromLicensePlateNumber(Token._webServiceToken, 
+                                    licensePlate, 
+                                    'on', 
+                                    (vin) => this.getVehicleHistoryReport(vin), 
+                                    (err) => this.error(err));
     }
 
     /**
