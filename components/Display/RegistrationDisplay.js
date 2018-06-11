@@ -40,25 +40,6 @@ const RegistrationDisplay = ({registration}) => {
             }
         }
     }
-<<<<<<< HEAD
-    
-    render() {
-        iconColour = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'red' : this.useType=="Commercial_Use" ? 'green' : 'orange' 
-        iconName = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  ? 'warning' : 'check' 
-        text = this.props.vhrReport.TitleOrRegistrationEvents === null || this.getRegistration()!==true  
-        ? 'Vehicle not currently registered' : this.useType=="Commercial_Use" 
-        ? 'Vehicle registered for commerical use' : 'Vehicle registered for non-commerical use' 
-
-        return (
-            <View style={styles.rows} >
-                <Icon raised name={iconName} color={iconColour} size={40} />
-                <Text style={styles.text}>{text}</Text>
-
-            </View>
-        )
-    }
-=======
->>>>>>> a12302aab046ed5bc2302b21bf2986a98e1076fb
 }
 
 const styles = StyleSheet.create({
