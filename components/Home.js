@@ -1,15 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, Vibration, Clipboard   } from 'react-native';
-import CameraScreen from './CameraScreen';
+import { StyleSheet, Text, View, Image, Alert, Vibration, Clipboard   } from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
 import Display from './Display';
 import Prompt from 'rn-prompt';
 import { Camera, Permissions  } from 'expo';
 
-import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from '../resources/ApiCalls';
+import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from 'carproof-data-apis';
 
 export default class App extends React.Component {
 

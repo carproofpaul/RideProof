@@ -19,6 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "carproof-data-apis": "file:Libraries/ValuationLibrary",
     "check-word": "^1.1.0",
     "expo": "^27.0.1",
     "moment": "^2.22.2",
