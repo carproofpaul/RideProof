@@ -9,7 +9,7 @@ import Display from './Display';
 import Prompt from 'rn-prompt';
 import { Camera, Permissions  } from 'expo';
 
-import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from '../ApiCalls';
+import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from '../resources/ApiCalls';
 
 export default class App extends React.Component {
 
