@@ -1,0 +1,21 @@
+{
+  "name": "carproof-data-apis",
+  "version": "1.0.1",
+  "description": "To install this module: \r     npm i carproof-data-apis --save",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Kamran Fekri kfekri@carproof.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carproofpaul/ValuationLibrary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carproofpaul/ValuationLibrary/issues"
+  },
+  "homepage": "https://github.com/carproofpaul/ValuationLibrary#readme",
+  "private": true
+}
