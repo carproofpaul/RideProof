@@ -242,19 +242,23 @@ export default class App extends React.Component {
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 <Prompt
-                    title="License Plate"
+                    title="License Plate or VIN"
                     defaultValue={this.state.licensePlateText}
                     visible={this.state.prompt}
-                    placeholder="License Plate"
+                    placeholder="License Plate or VIN"
                     onChangeText={(text) => {
-                        this.setState({licensePlateText: text})
+                        this.setState({licensePlateText: text.toUpperCase()})
                     }}
                     onCancel={() => {
                         this.setState({prompt: false, licensePlateText: '', image: null})
                     }}
                     onSubmit={() => {
-                        this.getVinFromLicensePlate(this.state.licensePlateText)
-                        this.setState({prompt: false, licensePlateText: '', image: 'white'})
+                        if(this.state.licensePlateText.length > 10){
+                            this.getVehicleHistoryReport(this.state.licensePlateText) //VIN
+                        } else {
+                            this.getVinFromLicensePlate(this.state.licensePlateText)
+                        }
+                        this.setState({prompt: false, licensePlateText: '', image: 'white'}) //License plate
                     }}
                 />
 
