@@ -1,0 +1,14 @@
+08/27/2018 by Kamran Fekri
+
+What is RideProof?
+    This app was created to fill the void of vehicle safety in the ride-sharing economy.
+    When using services like Uber or Lyft, you are unaware of the actually safety and history of the vehicle it-self. 
+    RideProof allows the rider to enter the driver's license plate number (or take a picture of it), 
+    and the app will display safety score and brief history summary of the vehicle. 
+    This will allows the rider to feel more confortable using the service. 
+
+How it works?
+    RideProof has four input methods; License plate number, VIN, picture of the license plate, and text from the clipboard.
+    License plate number and vin works the same way, the user enters it manually and the app calls the necessary apis. 
+    The license plate requires an additional call to convert it to a vin. For the image input, it gets uploaded to cloudnary
+    for storage and then sent to sighthound for OCR. 
