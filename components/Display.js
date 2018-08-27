@@ -17,15 +17,17 @@ import RegistrationDisplay from './Display/RegistrationDisplay';
 
 export default class Display extends React.Component {
 
+    /**
+     * This screen display multiple summaries for each section
+     * Clicking on one expands it into a new modal.
+     */
+
     state = {
         component: null,
         modalVisible: false,
     }
 
-
-
     getContent(){
-
         return(
             <ScrollView style={{margin: 10}}>
 

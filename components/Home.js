@@ -1,15 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Alert, Vibration, Clipboard   } from 'react-native';
-//import Icon from 'react-native-vector-icons/FontAwesome';
 import { Icon } from 'react-native-elements';
 import { Token } from '../resources/Token';
 import Loader from './Loader';
 import Display from './Display';
 import Prompt from 'rn-prompt';
 import { Camera, Permissions  } from 'expo';
-
 import { getVinFromLicensePlateNumber, getVehicleHistoryReportFromVin, getRecallsFromVin } from 'carproof-data-apis';
 
+/**
+ * Home/main screen of the app
+ * This screen contains a camera view, with a few buttons.
+ *  - Take Picture
+ *  - Enter license plate/vin manually
+ *  - turn on flash
+ */
 export default class App extends React.Component {
 
     state = {
@@ -25,7 +30,10 @@ export default class App extends React.Component {
         flash: false,
     }
 
-    
+    /**
+     * Checks the user's clip board for possible copied license plate
+     *  if detected, it will ask the user first before using it. 
+     */
     async _CheckClipBoard() {
         var content = await Clipboard.getString();
 
@@ -45,10 +53,14 @@ export default class App extends React.Component {
 
     async componentWillMount() {
         this._CheckClipBoard()
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        const { status } = await Permissions.askAsync(Permissions.CAMERA); //getting camera permissions
         this.setState({ permissionsGranted: status === 'granted', isReady: true });
     }
 
+    /**
+     * returns the camera component if we have permissions
+     * if not, it returns a no permissions warning
+     */
     getCamera(){
         if(this.state.permissionsGranted == true) cameraScreenContent = this.renderCamera()
         else if(this.state.permissionsGranted == false) cameraScreenContent = this.renderNoPermissions()
@@ -57,6 +69,11 @@ export default class App extends React.Component {
         return cameraScreenContent
     }
 
+    /**
+     * returns the camera component, 
+     * after taking a picture (image !== null), 
+     * it returns the image to be displayed
+     */
     renderCamera(){
         if(this.state.image !== null){
             return(
@@ -98,7 +115,7 @@ export default class App extends React.Component {
                 {text: 'Ok', onPress: () => this.setState({image: null})},
             ],
             { cancelable: false }
-          )
+        )
     }
 
     /**
@@ -180,6 +197,14 @@ export default class App extends React.Component {
      * @param {URI of image} uri 
      */
     uploadImage(uri){
+
+        /**
+         * *NOTE*
+         * I used cloudinary to store the images, this then allowed me to send it to sighthound. 
+         * However, the "X-Access-Token" is under my cloudinary carproof account. If it stops working, or you need access to the account.
+         * You'll need to make a new account and swap the keys because my email would be deactivated by then. 
+         */
+
         this.setState({loading: true})
 
         var fd = new FormData();
@@ -215,7 +240,7 @@ export default class App extends React.Component {
             this.camera.takePictureAsync({quality: 0.75}).then(data => {
                 Vibration.vibrate()
                 this.setState({loading: true, image: data.uri})        
-                this.uploadImage(data.uri)
+                this.uploadImage(data.uri) //uploading image to storage
             });
         }
     };
@@ -226,13 +251,12 @@ export default class App extends React.Component {
         if (!this.state.isReady) {
             return (
                 <View>
-                    <Loader loading={!this.state.isReady}/>
                 </View>
             );
         }
 
 
-        if(this.state.modalVisible==true) {
+        if(this.state.modalVisible == true) {
             return(
                 <Display vhrReport={this.vhr} recalls={this.recalls} onClose={()=>this.setState({modalVisible:false, image:null})} />
             )
