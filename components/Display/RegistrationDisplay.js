@@ -15,6 +15,7 @@ const RegistrationDisplay = ({registration}) => {
         ? 'warning' 
         : 'check' 
 
+    //check if registered, if so, determine if it's commercial or personal use. 
     text = registration === null 
         ? 'Vehicle Never Registered' 
         : !getRegistration()

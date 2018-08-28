@@ -2,6 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+/**
+ * Displays a quick summary of the vehicle's recall history. 
+ */
+
 const RecallDisplay = ({recall}) => {
     
     iconColour = recall === null ? 'green' : 'red'

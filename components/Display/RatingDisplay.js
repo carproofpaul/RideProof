@@ -3,6 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { AnimatedGaugeProgress } from 'react-native-simple-gauge';
 
+/**
+ * This component determines the rating and creates the gauge. 
+ */
+
 const RatingDisplay = ({vhrReport, recalls}) => {
 
     scale = 0

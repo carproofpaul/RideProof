@@ -3,9 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
+/**
+ * Display available service history for the vehicle
+ * NOTE: having no service history does not mean it has never been serviced. Some companies do not report. 
+ */
+
 const ServiceDisplay = ({serviceEvents}) => {
     
     if(serviceEvents !== null){
+        //only show service that's been done within one year. 
         numberOfService = 0
         now = moment()
         for(i = 0; i < serviceEvents.length; i++){

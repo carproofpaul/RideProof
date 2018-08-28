@@ -3,12 +3,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
-
+/**
+ * Displays a quick summary of the vehicle's accident history. 
+ */
 
 const AccidentDisplay = ({accidentEvents}) => {
 
-    iconColour = accidentEvents === null ? 'green' : isWithinYear(accidentEvents) ? 'red' : 'orange'
-    iconName = accidentEvents === null ? 'check' : 'warning'
+    iconColour = accidentEvents === null 
+        ? 'green' 
+        : isWithinYear(accidentEvents) 
+            ? 'red' 
+            : 'orange'
+    iconName = accidentEvents === null 
+        ? 'check' 
+        : 'warning'
     text = accidentEvents === null 
         ? 'No Accidents Reported' 
         : accidentEvents.length + ' Accident(s) Reported'  
